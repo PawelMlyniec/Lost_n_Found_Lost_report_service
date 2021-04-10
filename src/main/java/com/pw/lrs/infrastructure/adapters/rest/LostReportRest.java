@@ -8,17 +8,27 @@ import lombok.Data;
 import lombok.With;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.Optional;
 
 @Data
 @With
 @Builder(setterPrefix = "with")
 public class LostReportRest {
 
-    @JsonProperty @Nullable private final String lostReportId;
-    @JsonProperty private final String title;
-    @JsonProperty private final String description;
-    @JsonProperty private final String category;
-    @JsonProperty @Nullable private final Instant reportedAt;
+    @JsonProperty
+    @Nullable
+    private final String lostReportId;
+    @JsonProperty
+    private final String title;
+    @JsonProperty
+    private final String description;
+    @JsonProperty
+    private final String category;
+    @JsonProperty
+    @Nullable
+    private final OffsetDateTime reportedAt;
 
     public LostReport toDomain() {
 
@@ -27,18 +37,20 @@ public class LostReportRest {
             .withTitle(title)
             .withDescription(description)
             .withCategory(category)
-            .withReportedAt(reportedAt)
+            .withReportedAt(Optional.ofNullable(reportedAt)
+                .map(OffsetDateTime::toInstant)
+                .orElse(null))
             .build();
     }
 
     public static LostReportRest fromDomain(LostReport domain) {
 
         return LostReportRest.builder()
-            .withLostReportId(domain.id())
+            .withLostReportId(domain.id().raw())
             .withTitle(domain.title())
             .withDescription(domain.description())
             .withCategory(domain.category())
-            .withReportedAt(domain.reportedAt())
+            .withReportedAt(domain.reportedAt().atOffset(ZoneOffset.UTC))
             .build();
     }
 }
