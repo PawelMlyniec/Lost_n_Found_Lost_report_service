@@ -7,6 +7,8 @@ import com.pw.lrs.domain.ports.outgoing.LostReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 class LostReportFacadeImpl implements LostReportFacade {
 
@@ -23,7 +25,7 @@ class LostReportFacadeImpl implements LostReportFacade {
     @Override
     public LostReport createLostReport(final LostReport report) {
 
-        var persistedReport = lostReportRepository.save(report);
+        var persistedReport = lostReportRepository.save(report.withReportedAt(Instant.now()));
         fireLostReportCreated(persistedReport);
         return persistedReport;
     }

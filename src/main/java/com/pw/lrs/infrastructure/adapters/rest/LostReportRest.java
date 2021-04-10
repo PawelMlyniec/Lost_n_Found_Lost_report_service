@@ -11,14 +11,14 @@ import java.time.Instant;
 
 @Data
 @With
-@Builder(toBuilder = true, setterPrefix = "with")
+@Builder(setterPrefix = "with")
 public class LostReportRest {
 
     @JsonProperty @Nullable private final String lostReportId;
     @JsonProperty private final String title;
     @JsonProperty private final String description;
     @JsonProperty private final String category;
-    @JsonProperty private final Instant reportedAt;
+    @JsonProperty @Nullable private final Instant reportedAt;
 
     public LostReport toDomain() {
 

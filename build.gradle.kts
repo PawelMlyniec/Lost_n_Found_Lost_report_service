@@ -13,6 +13,33 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven("http://packages.confluent.io/maven/")
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        maven("http://packages.confluent.io/maven/")
+        maven("https://plugins.gradle.org/m2/")
+        maven("https://jitpack.io")
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            setSrcDirs(listOf("src/main/java", "build/generated/source/openapi/src/main/java"))
+        }
+        resources {
+            setSrcDirs(listOf("src/main/resources", "build/generated/source/openapi/src/main/resources"))
+        }
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.6.1"
+    }
 }
 
 dependencies {
@@ -29,13 +56,12 @@ dependencies {
     // Protobuf
     implementation("com.google.protobuf:protobuf-java:3.6.1")
 
+    // Confluent
+    implementation("io.confluent", "kafka-protobuf-serializer", "5.5.1")
+    implementation("io.confluent", "kafka-schema-registry-client", "5.5.1")
+    implementation("io.confluent", "monitoring-interceptors", "5.5.1")
+
     // Tests
     testImplementation("org.springframework.boot", "spring-boot-starter-test")
     testImplementation("org.springframework.kafka", "spring-kafka-test")
-}
-
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:3.6.1"
-    }
 }

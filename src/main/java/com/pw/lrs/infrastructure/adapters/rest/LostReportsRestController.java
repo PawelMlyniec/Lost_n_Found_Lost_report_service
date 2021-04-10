@@ -3,6 +3,7 @@ package com.pw.lrs.infrastructure.adapters.rest;
 import com.pw.lrs.domain.ports.incoming.LostReportFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,7 @@ public class LostReportsRestController {
     }
 
     @PostMapping
-    public LostReportRest createLostReport(LostReportRest report) {
+    public LostReportRest createLostReport(@RequestBody LostReportRest report) {
 
         var createdReport = facade.createLostReport(report.toDomain());
         return LostReportRest.fromDomain(createdReport);
