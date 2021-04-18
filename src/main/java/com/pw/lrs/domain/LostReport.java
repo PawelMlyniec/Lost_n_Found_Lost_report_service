@@ -11,9 +11,23 @@ import java.time.Instant;
 @Builder(toBuilder = true, setterPrefix = "with")
 public class LostReport {
 
-    private final String id;
-    private final String title;
-    private final String description;
-    private final String category;
-    private final Instant reportedAt;
+    private String id;
+    private String title;
+    private String description;
+    private String category;
+    private Instant reportedAt;
+    private String userId;
+    private Boolean isResolved;
+
+    public final LostReportId id() {
+        return LostReportId.of(id);
+    }
+
+    public final UserId userId() {
+        return UserId.of(userId);
+    }
+
+    public final void resolve() {
+        isResolved = true;
+    }
 }

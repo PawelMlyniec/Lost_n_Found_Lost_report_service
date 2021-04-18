@@ -5,12 +5,8 @@ option java_multiple_files = true;
 
 import "google/protobuf/timestamp.proto";
 
-message LostReportCreatedProto {
+message LostReportResolvedProto {
 
     string lostReportId = 1;
-    string title = 2;
-    string description = 3;
-    string category = 4;
-    string userId = 5;
-    uint64 reportedAt = 6;
+    uint64 resolvedAt = 2;
 }
