@@ -31,7 +31,7 @@ class LostReportFacadeImpl implements LostReportFacade {
     public LostReport createLostReport(final LostReport report) {
 
         var persistedReport = lostReportRepository.save(report.withReportedAt(Instant.now()));
-        fireLostReportCreated(persistedReport);
+        //fireLostReportCreated(persistedReport); TODO: find out what's wrong with multiple events
         return persistedReport;
     }
 
@@ -48,9 +48,14 @@ class LostReportFacadeImpl implements LostReportFacade {
     }
 
     @Override
+    public LostReport findLostReport(LostReportId id) {
+        return lostReportRepository.findById(id.raw()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @Override
     public LostReport resolveLostReport(LostReportId id) {
 
-        var lostReport = lostReportRepository.findById(id.raw()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        var lostReport = findLostReport(id);
         lostReport.resolve();
         lostReportRepository.save(lostReport);
         //fireLostReportResolved(lostReport); TODO: find out what's wrong with multiple events
