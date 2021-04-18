@@ -24,6 +24,7 @@ public class LostReportsRestController {
 
     @GetMapping("/{id}")
     public LostReportRest findLostReport(@PathVariable String id) {
+
         var foundReport = facade.findLostReport(LostReportId.of(id));
         return LostReportRest.fromDomain(foundReport);
     }
