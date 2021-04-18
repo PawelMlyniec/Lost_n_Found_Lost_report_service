@@ -68,3 +68,17 @@ dependencies {
     testImplementation("org.springframework.boot", "spring-boot-starter-test")
     testImplementation("org.springframework.kafka", "spring-kafka-test")
 }
+
+tasks {
+
+    bootJar {
+        archiveFileName.set("lost-report-service.jar")
+    }
+
+    register<Exec>("dockerBuild") {
+        group = "build"
+        description = "Builds Docker Image"
+        dependsOn("bootJar")
+        commandLine("docker", "build", "-t", "lost-report-service", "--target", "fast", "--build-arg", "PROFILE=dev", ".")
+    }
+}
