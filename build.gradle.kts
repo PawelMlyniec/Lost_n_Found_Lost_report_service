@@ -73,6 +73,7 @@ tasks {
 
     bootJar {
         archiveFileName.set("lost-report-service.jar")
+        dependsOn("generateProto")
     }
 
     register<Exec>("dockerBuild") {
