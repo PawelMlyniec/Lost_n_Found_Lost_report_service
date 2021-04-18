@@ -5,7 +5,7 @@ RUN apk add binutils
 RUN jlink \
     --verbose \
     --add-modules \
-        java.base,java.sql,java.naming,java.desktop,java.management,java.security.jgss,java.instrument,jdk.jdwp.agent,jdk.unsupported \
+        java.base,java.sql,java.naming,java.desktop,java.management,java.security.jgss,java.instrument,jdk.jdwp.agent,jdk.unsupported,jdk.net \
     --compress 2 --strip-debug --no-header-files --no-man-pages \
     --output "$JAVA_MINIMAL"
 
