@@ -22,6 +22,12 @@ public class LostReportsRestController {
         return LostReportRest.fromDomain(createdReport);
     }
 
+    @GetMapping("/{id}")
+    public LostReportRest findLostReport(@PathVariable String id) {
+        var foundReport = facade.findLostReport(LostReportId.of(id));
+        return LostReportRest.fromDomain(foundReport);
+    }
+
     @PostMapping("/{id}/resolve")
     public LostReportRest resolveLostReport(@PathVariable String id) {
 

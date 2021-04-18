@@ -61,6 +61,9 @@ dependencies {
     implementation("io.confluent", "kafka-schema-registry-client", "5.5.1")
     implementation("io.confluent", "monitoring-interceptors", "5.5.1")
 
+    // OpenAPI
+    compileOnly("org.springdoc", "springdoc-openapi-ui","1.5.7")
+
     // Tests
     testImplementation("org.springframework.boot", "spring-boot-starter-test")
     testImplementation("org.springframework.kafka", "spring-kafka-test")
