@@ -1,0 +1,10 @@
+/.gradle/
+/.idea/
+/.settings/
+**/logs/
+/src/
+/api/
+/commons/
+/ignite/
+**/out/
+bin
