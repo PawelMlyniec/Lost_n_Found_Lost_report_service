@@ -20,8 +20,8 @@ public class LostReportsRestController {
     }
 
     @PostMapping
-    public LostReportRest createLostReport(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(
-        content = @Content(examples = @ExampleObject(
+    public LostReportRest createLostReport(@RequestBody
+       @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(examples = @ExampleObject(
             value = "{\n"
                 + "    \"title\": \"Zgubiłem Opla\",\n"
                 + "    \"description\": \"Opel był niebieski\",\n"
