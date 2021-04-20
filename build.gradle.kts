@@ -62,7 +62,7 @@ dependencies {
     implementation("io.confluent", "monitoring-interceptors", "5.5.1")
 
     // OpenAPI
-    compileOnly("org.springdoc", "springdoc-openapi-ui","1.5.7")
+    implementation("org.springdoc", "springdoc-openapi-ui","1.5.7")
 
     // Tests
     testImplementation("org.springframework.boot", "spring-boot-starter-test")
