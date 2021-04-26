@@ -13,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 
+import static org.springframework.http.HttpStatus.*;
+
 @Service
 @Transactional
 class LostReportFacadeImpl implements LostReportFacade {
@@ -31,7 +33,7 @@ class LostReportFacadeImpl implements LostReportFacade {
     public LostReport findLostReport(LostReportId id) {
 
         return lostReportRepository.findById(id.raw())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Override
@@ -40,6 +42,16 @@ class LostReportFacadeImpl implements LostReportFacade {
         var persistedReport = lostReportRepository.save(report.withReportedAt(Instant.now()));
         fireLostReportCreated(persistedReport);
         return persistedReport;
+    }
+
+    @Override
+    public LostReport resolveLostReport(LostReportId id) {
+
+        var lostReport = findLostReport(id);
+        lostReport.resolve();
+        lostReportRepository.save(lostReport);
+        fireLostReportResolved(lostReport);
+        return lostReport;
     }
 
     private void fireLostReportCreated(LostReport report) {
@@ -52,16 +64,6 @@ class LostReportFacadeImpl implements LostReportFacade {
             .setReportedAt(report.reportedAt().toEpochMilli())
             .build();
         eventPublisher.publishDomainEvent(getAuthenticatedUserId(), event);
-    }
-
-    @Override
-    public LostReport resolveLostReport(LostReportId id) {
-
-        var lostReport = findLostReport(id);
-        lostReport.resolve();
-        lostReportRepository.save(lostReport);
-        fireLostReportResolved(lostReport);
-        return lostReport;
     }
 
     private void fireLostReportResolved(LostReport report) {

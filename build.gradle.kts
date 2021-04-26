@@ -45,9 +45,17 @@ protobuf {
 dependencies {
     // Spring
     implementation("org.springframework.boot", "spring-boot-starter-web")
-    implementation("org.springframework.kafka", "spring-kafka")
-    implementation("org.springframework.boot", "spring-boot-starter-data-mongodb")
     annotationProcessor("org.springframework.boot", "spring-boot-configuration-processor")
+
+    // Security
+    implementation("org.springframework.boot", "spring-boot-starter-security")
+    implementation("org.springframework.boot", "spring-boot-starter-oauth2-resource-server")
+
+    // Kafka
+    implementation("org.springframework.kafka", "spring-kafka")
+
+    // MongoDB
+    implementation("org.springframework.boot", "spring-boot-starter-data-mongodb")
 
     // Lombok
     compileOnly("org.projectlombok", "lombok")
