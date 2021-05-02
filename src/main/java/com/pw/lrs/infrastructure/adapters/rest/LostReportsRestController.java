@@ -46,4 +46,9 @@ public class LostReportsRestController {
         var resolvedReport = facade.resolveLostReport(LostReportId.of(id));
         return LostReportRest.fromDomain(resolvedReport);
     }
+
+    @DeleteMapping("/{id}/delete")
+    public void deleteLostReport(@PathVariable String id) {
+        facade.deleteLostReport(LostReportId.of(id));
+    }
 }

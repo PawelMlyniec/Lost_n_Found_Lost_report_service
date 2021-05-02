@@ -6,7 +6,6 @@ import com.pw.lrs.domain.ports.incoming.LostReportFacade;
 import com.pw.lrs.domain.ports.outgoing.EventPublisher;
 import com.pw.lrs.domain.ports.outgoing.LostReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -52,6 +51,11 @@ class LostReportFacadeImpl implements LostReportFacade {
         lostReportRepository.save(lostReport);
         fireLostReportResolved(lostReport);
         return lostReport;
+    }
+
+    @Override
+    public void deleteLostReport(LostReportId id) {
+        lostReportRepository.deleteById(id.raw());
     }
 
     private void fireLostReportCreated(LostReport report) {
