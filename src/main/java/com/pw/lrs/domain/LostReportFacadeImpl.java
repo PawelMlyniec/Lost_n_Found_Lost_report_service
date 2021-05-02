@@ -1,12 +1,12 @@
 package com.pw.lrs.domain;
 
 import com.pw.lrs.LostReportCreatedProto;
+import com.pw.lrs.LostReportEditedProto;
 import com.pw.lrs.LostReportResolvedProto;
 import com.pw.lrs.domain.ports.incoming.LostReportFacade;
 import com.pw.lrs.domain.ports.outgoing.EventPublisher;
 import com.pw.lrs.domain.ports.outgoing.LostReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -45,6 +45,18 @@ class LostReportFacadeImpl implements LostReportFacade {
     }
 
     @Override
+    public LostReport editLostReport(LostReportId id, LostReport editedReport) {
+
+        var lostReport = findLostReport(id);
+        editedReport.isResolved(lostReport.isResolved());
+        editedReport.reportedAt(lostReport.reportedAt());
+        editedReport.id(id.raw());
+        lostReportRepository.save(editedReport);
+        fireLostReportEdited(editedReport);
+        return editedReport;
+    }
+
+    @Override
     public LostReport resolveLostReport(LostReportId id) {
 
         var lostReport = findLostReport(id);
@@ -62,6 +74,17 @@ class LostReportFacadeImpl implements LostReportFacade {
             .setDescription(report.description())
             .setCategory(report.category())
             .setReportedAt(report.reportedAt().toEpochMilli())
+            .build();
+        eventPublisher.publishDomainEvent(getAuthenticatedUserId(), event);
+    }
+
+    private void fireLostReportEdited(LostReport report) {
+
+        var event = LostReportEditedProto.newBuilder()
+            .setLostReportId(report.id().raw())
+            .setTitle(report.title())
+            .setDescription(report.description())
+            .setCategory(report.category())
             .build();
         eventPublisher.publishDomainEvent(getAuthenticatedUserId(), event);
     }

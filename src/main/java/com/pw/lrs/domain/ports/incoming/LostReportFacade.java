@@ -24,6 +24,16 @@ public interface LostReportFacade {
      */
     LostReport createLostReport(LostReport report);
 
+
+    /**
+     * Edit lost report
+     *
+     * @param id lost report identifier
+     * @param editedReport DTO containing edited lost report data
+     * @return lost report domain object with unique ID assigned
+     */
+    LostReport editLostReport(LostReportId id, LostReport editedReport);
+
     /**
      * Mark lost report as resolved
      *

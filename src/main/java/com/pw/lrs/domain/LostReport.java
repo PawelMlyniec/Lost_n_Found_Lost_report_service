@@ -2,16 +2,18 @@ package com.pw.lrs.domain;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Setter;
 import lombok.With;
 
 import java.time.Instant;
 
 @Data
 @With
+@Setter
 @Builder(toBuilder = true, setterPrefix = "with")
 public class LostReport {
 
-    private String id;
+    private @Setter String id;
     private String title;
     private String description;
     private String category;
