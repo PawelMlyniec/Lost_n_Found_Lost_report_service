@@ -3,6 +3,8 @@ package com.pw.lrs.domain.ports.incoming;
 import com.pw.lrs.domain.LostReport;
 import com.pw.lrs.domain.LostReportId;
 
+import java.io.IOException;
+
 /**
  * Facade for lost reports
  */
@@ -22,7 +24,7 @@ public interface LostReportFacade {
      * @param report DTO containing lost report data
      * @return lost report domain object with unique ID assigned
      */
-    LostReport createLostReport(LostReport report);
+    LostReport createLostReport(LostReport report) throws IOException;
 
     /**
      * Mark lost report as resolved

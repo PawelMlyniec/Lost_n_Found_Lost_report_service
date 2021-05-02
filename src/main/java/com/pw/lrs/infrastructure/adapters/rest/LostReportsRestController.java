@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 
+import java.io.IOException;
+
 
 @RestController
 @RequestMapping("/lostReports")
@@ -27,7 +29,7 @@ public class LostReportsRestController {
                 + "    \"description\": \"Opel był niebieski\",\n"
                 + "    \"category\": \"car\"\n"
                 + "}"
-        ))) LostReportRest report) {
+        ))) LostReportRest report) throws IOException {
 
         var createdReport = facade.createLostReport(report.toDomain());
         return LostReportRest.fromDomain(createdReport);
