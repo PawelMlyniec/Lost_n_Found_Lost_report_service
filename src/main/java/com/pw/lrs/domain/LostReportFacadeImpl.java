@@ -9,16 +9,11 @@ import com.pw.lrs.domain.ports.outgoing.LostReportRepository;
 import com.pw.lrs.domain.ports.outgoing.RetrofitClient;
 import com.pw.lrs.infrastructure.adapters.auth0.Auth0AccessTokenBody;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.Instant;
 
 import static org.springframework.http.HttpStatus.*;
@@ -32,7 +27,8 @@ class LostReportFacadeImpl implements LostReportFacade {
     private final RetrofitClient retrofitClient;
 
     @Autowired
-    LostReportFacadeImpl(LostReportRepository lostReportRepository, EventPublisher eventPublisher, RetrofitClient retrofitClient) {
+    LostReportFacadeImpl(LostReportRepository lostReportRepository, EventPublisher eventPublisher,
+                         RetrofitClient retrofitClient) {
 
         this.lostReportRepository = lostReportRepository;
         this.eventPublisher = eventPublisher;
@@ -49,19 +45,7 @@ class LostReportFacadeImpl implements LostReportFacade {
     @Override
     public LostReport createLostReport(final LostReport report) throws IOException {
         if(report.userId() != null){
-            Auth0Service service = retrofitClient.getRetrofitClient("https://lost-n-found.eu.auth0.com/")
-                    .create(Auth0Service.class);
-            var accessToken = service.getAccessToken(Auth0AccessTokenBody.builder()
-                    .withClient_id("gGcs9fp7dmJfPz94lbtYLKeY3FFxWbtD")
-                    .withClient_secret("CAEG0vfzJs8Kg3oIAgGZxLtwmpeS9bCsWjTf5USyLR-8JfmjBGzlyoY3mHfqanT7")
-                    .withAudience("https://lost-n-found.eu.auth0.com/api/v2/")
-                    .withGrant_type("client_credentials")
-                    .build()).execute();
-            var response = service.getUser(accessToken.body().token_type()
-                    +" "+accessToken.body().getAccess_token(), report.userId().raw()).execute();
-            if(!response.isSuccessful()){
-                throw new ResponseStatusException(UNAUTHORIZED);
-            }
+            authorizeUser(report.userId().raw());
         }
         var persistedReport = lostReportRepository.save(report.withReportedAt(Instant.now()));
         fireLostReportCreated(persistedReport);
@@ -103,5 +87,21 @@ class LostReportFacadeImpl implements LostReportFacade {
 
         // TODO obtain from authentication context
         return "1";
+    }
+
+    private void authorizeUser(String userId) throws IOException {
+        Auth0Service service = retrofitClient.getRetrofitClient("https://lost-n-found.eu.auth0.com/")
+                .create(Auth0Service.class);
+        var accessToken = service.getAccessToken(Auth0AccessTokenBody.builder()
+                .withClient_id("gGcs9fp7dmJfPz94lbtYLKeY3FFxWbtD")
+                .withClient_secret("CAEG0vfzJs8Kg3oIAgGZxLtwmpeS9bCsWjTf5USyLR-8JfmjBGzlyoY3mHfqanT7")
+                .withAudience("https://lost-n-found.eu.auth0.com/api/v2/")
+                .withGrant_type("client_credentials")
+                .build()).execute();
+        var response = service.getUser(accessToken.body().token_type()
+                +" "+accessToken.body().getAccess_token(), userId).execute();
+        if(!response.isSuccessful()){
+            throw new ResponseStatusException(UNAUTHORIZED);
+        }
     }
 }
