@@ -5,6 +5,7 @@ cache:
   paths:
     - .gradle/wrapper
     - .gradle/caches
+    - build/libs
 
 variables:
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
@@ -20,6 +21,7 @@ test:
   stage: test
   script:
     - ./gradlew test
+    - ./gradlew bootJar
 
 build:
   image: docker:19.03.8
@@ -29,7 +31,7 @@ build:
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $LATEST_IMAGE_TAG || true
-    - docker build --cache-from $LATEST_IMAGE_TAG -t $IMAGE_TAG -t $LATEST_IMAGE_TAG --target full --build-arg PROFILE=prod .
+    - docker build --cache-from $LATEST_IMAGE_TAG -t $IMAGE_TAG -t $LATEST_IMAGE_TAG --target fast --build-arg PROFILE=prod .
     - docker push $IMAGE_TAG
     - docker push $LATEST_IMAGE_TAG
 #  only:
