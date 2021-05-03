@@ -84,6 +84,7 @@ dependencies {
 tasks {
 
     bootJar {
+        mainClass.set("com.pw.lrs.LostReportService")
         archiveFileName.set("lost-report-service.jar")
         dependsOn("generateProto")
     }
