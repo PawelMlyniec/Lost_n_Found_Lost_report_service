@@ -25,19 +25,20 @@ class LostReportFacadeImpl implements LostReportFacade {
     private final LostReportRepository lostReportRepository;
     private final EventPublisher eventPublisher;
     private final RetrofitClient retrofitClient;
+    private final Auth0AccessTokenBody accessTokenBody;
 
     @Autowired
     LostReportFacadeImpl(LostReportRepository lostReportRepository, EventPublisher eventPublisher,
-                         RetrofitClient retrofitClient) {
+                         RetrofitClient retrofitClient, Auth0AccessTokenBody accessTokenBody) {
 
         this.lostReportRepository = lostReportRepository;
         this.eventPublisher = eventPublisher;
         this.retrofitClient = retrofitClient;
+        this.accessTokenBody = accessTokenBody;
     }
 
     @Override
     public LostReport findLostReport(LostReportId id) {
-
         return lostReportRepository.findById(id.raw())
             .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
@@ -92,12 +93,7 @@ class LostReportFacadeImpl implements LostReportFacade {
     private void authorizeUser(String userId) throws IOException {
         Auth0Service service = retrofitClient.getRetrofitClient("https://lost-n-found.eu.auth0.com/")
                 .create(Auth0Service.class);
-        var accessToken = service.getAccessToken(Auth0AccessTokenBody.builder()
-                .withClient_id("gGcs9fp7dmJfPz94lbtYLKeY3FFxWbtD")
-                .withClient_secret("CAEG0vfzJs8Kg3oIAgGZxLtwmpeS9bCsWjTf5USyLR-8JfmjBGzlyoY3mHfqanT7")
-                .withAudience("https://lost-n-found.eu.auth0.com/api/v2/")
-                .withGrant_type("client_credentials")
-                .build()).execute();
+        var accessToken = service.getAccessToken(accessTokenBody).execute();
         var response = service.getUser(accessToken.body().token_type()
                 +" "+accessToken.body().getAccess_token(), userId).execute();
         if(!response.isSuccessful()){

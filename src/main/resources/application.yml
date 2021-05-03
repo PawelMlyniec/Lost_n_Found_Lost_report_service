@@ -23,7 +23,11 @@ spring:
       username: lrs
       password: lrs
       database: lrs-db
-
+  auth0:
+    client-id: gGcs9fp7dmJfPz94lbtYLKeY3FFxWbtD
+    client-secret: CAEG0vfzJs8Kg3oIAgGZxLtwmpeS9bCsWjTf5USyLR-8JfmjBGzlyoY3mHfqanT7
+    audience: https://lost-n-found.eu.auth0.com/api/v2/
+    grant_type: client_credentials
 springdoc:
   swagger-ui:
     disable-swagger-default-url: true
