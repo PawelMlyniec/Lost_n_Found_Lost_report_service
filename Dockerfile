@@ -11,7 +11,7 @@ RUN jlink \
 
 # Fast build with local gradle
 FROM alpine:3.11 as fast
-ENV JAVA_HOME=/opt/java-minimal
+ENV JAVA_HOME="/opt/java-minimal"
 ENV PATH="$PATH:$JAVA_HOME/bin"
 ARG PROFILE
 ENV PROFILE $PROFILE
@@ -21,7 +21,8 @@ COPY ./ ./
 ENTRYPOINT java -jar -Dspring.profiles.active=$PROFILE build/libs/lost-report-service.jar
 
 # JAR builder
-FROM openjdk:14-alpine as jar-builder
+FROM openjdk:14 as jar-builder
+WORKDIR lost-report-service
 COPY ./ ./
 RUN ./gradlew bootJar
 RUN mv build/libs/* .
@@ -34,4 +35,5 @@ ARG PROFILE
 ENV PROFILE $PROFILE
 COPY --from=jvm-builder "$JAVA_HOME" "$JAVA_HOME"
 WORKDIR lost-report-service
-COPY --from=jar-builder /lost-report-service.jar .
+COPY --from=jar-builder /lost-report-service/lost-report-service.jar .
+ENTRYPOINT java -jar -Dspring.profiles.active=$PROFILE lost-report-service.jar
