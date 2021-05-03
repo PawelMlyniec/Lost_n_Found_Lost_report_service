@@ -8,6 +8,7 @@ import com.pw.lrs.domain.ports.outgoing.EventPublisher;
 import com.pw.lrs.domain.ports.outgoing.LostReportRepository;
 import com.pw.lrs.domain.ports.outgoing.RetrofitClient;
 import com.pw.lrs.infrastructure.adapters.auth0.Auth0AccessTokenBody;
+import com.pw.lrs.infrastructure.adapters.auth0.Auth0ServiceSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,15 +27,18 @@ class LostReportFacadeImpl implements LostReportFacade {
     private final EventPublisher eventPublisher;
     private final RetrofitClient retrofitClient;
     private final Auth0AccessTokenBody accessTokenBody;
+    private final Auth0ServiceSettings serviceSettings;
 
     @Autowired
     LostReportFacadeImpl(LostReportRepository lostReportRepository, EventPublisher eventPublisher,
-                         RetrofitClient retrofitClient, Auth0AccessTokenBody accessTokenBody) {
+                         RetrofitClient retrofitClient, Auth0AccessTokenBody accessTokenBody,
+                         Auth0ServiceSettings serviceSettings) {
 
         this.lostReportRepository = lostReportRepository;
         this.eventPublisher = eventPublisher;
         this.retrofitClient = retrofitClient;
         this.accessTokenBody = accessTokenBody;
+        this.serviceSettings = serviceSettings;
     }
 
     @Override
@@ -91,13 +95,18 @@ class LostReportFacadeImpl implements LostReportFacade {
     }
 
     private void authorizeUser(String userId) throws IOException {
-        Auth0Service service = retrofitClient.getRetrofitClient("https://lost-n-found.eu.auth0.com/")
+        Auth0Service service = retrofitClient.getRetrofitClient(serviceSettings.getUrl())
                 .create(Auth0Service.class);
         var accessToken = service.getAccessToken(accessTokenBody).execute();
-        var response = service.getUser(accessToken.body().token_type()
-                +" "+accessToken.body().getAccess_token(), userId).execute();
-        if(!response.isSuccessful()){
-            throw new ResponseStatusException(UNAUTHORIZED);
+        if(accessToken.body()!=null && accessToken.isSuccessful()){
+            var response = service.getUser(accessToken.body().token_type()
+                    +" "+accessToken.body().getAccess_token(), userId).execute();
+            if(!response.isSuccessful()){
+                throw new ResponseStatusException(UNAUTHORIZED);
+            }
         }
+        else
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR);
+
     }
 }

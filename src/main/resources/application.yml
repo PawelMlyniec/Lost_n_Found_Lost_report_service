@@ -28,6 +28,9 @@ spring:
     client-secret: CAEG0vfzJs8Kg3oIAgGZxLtwmpeS9bCsWjTf5USyLR-8JfmjBGzlyoY3mHfqanT7
     audience: https://lost-n-found.eu.auth0.com/api/v2/
     grant_type: client_credentials
+    service:
+        url: https://lost-n-found.eu.auth0.com/
+
 springdoc:
   swagger-ui:
     disable-swagger-default-url: true
