@@ -1,0 +1,46 @@
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
+variables:
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  LATEST_IMAGE_TAG: $CI_REGISTRY_IMAGE:latest
+
+stages:
+  - test
+  - build
+  - deploy
+
+test:
+  image: openjdk:14
+  stage: test
+  script:
+    - ./gradlew test
+
+build:
+  image: docker:19.03.8
+  stage: build
+  services:
+    - docker:19.03.8-dind
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker pull $LATEST_IMAGE_TAG || true
+    - docker build --cache-from $LATEST_IMAGE_TAG -t $IMAGE_TAG -t $LATEST_IMAGE_TAG --target full --build-arg PROFILE=prod .
+    - docker push $IMAGE_TAG
+    - docker push $LATEST_IMAGE_TAG
+#  only:
+#    - master
+
+deploy:
+  image: google/cloud-sdk:293.0.0
+  stage: deploy
+  script:
+    - gcloud auth activate-service-account --key-file=$GKE_ACCESS_JSON
+    - gcloud container clusters get-credentials lost-n-found-prod --zone europe-west3-a --project lost-n-found-311815
+    - kubectl rollout restart deployment lost-report-service
+  only:
+    - master

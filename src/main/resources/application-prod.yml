@@ -1,0 +1,17 @@
+spring:
+  kafka:
+    bootstrap-servers: kafka-cluster-kafka-brokers.kafka:9092
+    client-id: lost-report-service
+    properties:
+      schema.registry.url: http://schema-registry.kafka:8081
+      value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
+  data:
+    mongodb:
+      host: mongo
+      port: 27017
+      username: lrs
+      password: lrs
+      database: lrs-db

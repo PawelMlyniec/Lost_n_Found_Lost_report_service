@@ -69,6 +69,10 @@ dependencies {
     implementation("io.confluent", "kafka-schema-registry-client", "5.5.1")
     implementation("io.confluent", "monitoring-interceptors", "5.5.1")
 
+    // Metrics
+    implementation("org.springframework.boot", "spring-boot-starter-actuator", "2.4.0")
+    implementation("io.micrometer", "micrometer-registry-prometheus", "latest.release")
+
     // OpenAPI
     implementation("org.springdoc", "springdoc-openapi-ui","1.5.7")
 
