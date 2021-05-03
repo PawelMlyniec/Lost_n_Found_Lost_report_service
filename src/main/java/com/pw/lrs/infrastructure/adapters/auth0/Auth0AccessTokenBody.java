@@ -19,10 +19,6 @@ public class Auth0AccessTokenBody {
     private String audience;
     private String grant_type;
 
-    public Auth0AccessTokenBody(){
-
-    }
-
     public String getClient_id() {
         return client_id;
     }
