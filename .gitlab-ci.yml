@@ -12,20 +12,20 @@ variables:
   LATEST_IMAGE_TAG: $CI_REGISTRY_IMAGE:latest
 
 stages:
-  - test
   - build
+  - dockerize
   - deploy
 
-test:
+build:
   image: openjdk:14
-  stage: test
+  stage: build
   script:
     - ./gradlew test
     - ./gradlew bootJar
 
-build:
+dockerize:
   image: docker:19.03.8
-  stage: build
+  stage: dockerize
   services:
     - docker:19.03.8-dind
   script:
@@ -34,8 +34,8 @@ build:
     - docker build --cache-from $LATEST_IMAGE_TAG -t $IMAGE_TAG -t $LATEST_IMAGE_TAG --target fast --build-arg PROFILE=prod .
     - docker push $IMAGE_TAG
     - docker push $LATEST_IMAGE_TAG
-#  only:
-#    - master
+  only:
+    - master
 
 deploy:
   image: google/cloud-sdk:293.0.0
