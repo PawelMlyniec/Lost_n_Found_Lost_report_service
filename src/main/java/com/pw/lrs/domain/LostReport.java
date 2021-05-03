@@ -9,14 +9,13 @@ import java.time.Instant;
 
 @Data
 @With
-@Setter
 @Builder(toBuilder = true, setterPrefix = "with")
 public class LostReport {
 
-    private @Setter String id;
-    private String title;
-    private String description;
-    private String category;
+    private String id;
+    private @Setter String title;
+    private @Setter String description;
+    private @Setter String category;
     private Instant reportedAt;
     private String userId;
     private Boolean isResolved;

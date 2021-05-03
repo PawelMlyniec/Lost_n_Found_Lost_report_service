@@ -48,12 +48,12 @@ class LostReportFacadeImpl implements LostReportFacade {
     public LostReport editLostReport(LostReportId id, LostReport editedReport) {
 
         var lostReport = findLostReport(id);
-        editedReport.isResolved(lostReport.isResolved());
-        editedReport.reportedAt(lostReport.reportedAt());
-        editedReport.id(id.raw());
-        lostReportRepository.save(editedReport);
-        fireLostReportEdited(editedReport);
-        return editedReport;
+        lostReport.category(editedReport.category());
+        lostReport.description(editedReport.description());
+        lostReport.title(editedReport.title());
+        lostReportRepository.save(lostReport);
+        fireLostReportEdited(lostReport);
+        return lostReport;
     }
 
     @Override
