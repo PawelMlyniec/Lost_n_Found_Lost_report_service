@@ -10,7 +10,7 @@ spring:
       value-serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
   data:
     mongodb:
-      host: mongo
+      host: mongodb-svc.mongo
       port: 27017
       username: lrs
       password: lrs
