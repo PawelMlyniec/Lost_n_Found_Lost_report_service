@@ -52,7 +52,6 @@ class LostReportFacadeImpl implements LostReportFacade {
         lostReport.description(editedReport.description());
         lostReport.title(editedReport.title());
         lostReportRepository.save(lostReport);
-        fireLostReportEdited(lostReport);
         return lostReport;
     }
 
@@ -74,17 +73,6 @@ class LostReportFacadeImpl implements LostReportFacade {
             .setDescription(report.description())
             .setCategory(report.category())
             .setReportedAt(report.reportedAt().toEpochMilli())
-            .build();
-        eventPublisher.publishDomainEvent(getAuthenticatedUserId(), event);
-    }
-
-    private void fireLostReportEdited(LostReport report) {
-
-        var event = LostReportEditedProto.newBuilder()
-            .setLostReportId(report.id().raw())
-            .setTitle(report.title())
-            .setDescription(report.description())
-            .setCategory(report.category())
             .build();
         eventPublisher.publishDomainEvent(getAuthenticatedUserId(), event);
     }
