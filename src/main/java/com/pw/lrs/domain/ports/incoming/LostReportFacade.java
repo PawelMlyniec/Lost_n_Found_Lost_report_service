@@ -41,4 +41,11 @@ public interface LostReportFacade {
      * @return resolved lost report
      */
     LostReport resolveLostReport(LostReportId id);
+
+    /**
+     * Delete lost report
+     *
+     * @param id lost report identifier
+     */
+    void deleteLostReport(LostReportId id);
 }

@@ -65,6 +65,11 @@ class LostReportFacadeImpl implements LostReportFacade {
         return lostReport;
     }
 
+    @Override
+    public void deleteLostReport(LostReportId id) {
+        lostReportRepository.deleteById(id.raw());
+    }
+
     private void fireLostReportCreated(LostReport report) {
 
         var event = LostReportCreatedProto.newBuilder()
