@@ -6,14 +6,13 @@ import com.pw.lrs.domain.ports.incoming.LostReportFacade;
 import com.pw.lrs.domain.ports.outgoing.EventPublisher;
 import com.pw.lrs.domain.ports.outgoing.LostReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @Transactional

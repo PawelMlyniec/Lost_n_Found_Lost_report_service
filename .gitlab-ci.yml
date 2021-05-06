@@ -34,8 +34,8 @@ dockerize:
     - docker build --cache-from $LATEST_IMAGE_TAG -t $IMAGE_TAG -t $LATEST_IMAGE_TAG --target fast --build-arg PROFILE=prod .
     - docker push $IMAGE_TAG
     - docker push $LATEST_IMAGE_TAG
-  only:
-    - master
+#  only:
+#    - master
 
 deploy:
   image: google/cloud-sdk:293.0.0

@@ -14,11 +14,19 @@ FROM alpine:3.11 as fast
 ENV JAVA_HOME="/opt/java-minimal"
 ENV PATH="$PATH:$JAVA_HOME/bin"
 ARG PROFILE
-ENV PROFILE $PROFILE
+ARG SCHEMA_REGISTRY_USERNAME
+ARG SCHEMA_REGISTRY_PASSWORD
+ENV PROFILE = $PROFILE
+ENV SCHEMA_REGISTRY_USERNAME = $SCHEMA_REGISTRY_USERNAME
+ENV SCHEMA_REGISTRY_PASSWORD = $SCHEMA_REGISTRY_PASSWORD
 COPY --from=jvm-builder "$JAVA_HOME" "$JAVA_HOME"
 WORKDIR lost-report-service
 COPY ./ ./
-ENTRYPOINT java -jar -Dspring.profiles.active=$PROFILE build/libs/lost-report-service.jar
+ENTRYPOINT java \
+    -Dspring.profiles.active=$PROFILE \
+    -DSCHEMA_REGISTRY_USERNAME=$SCHEMA_REGISTRY_USERNAME \
+    -DSCHEMA_REGISTRY_PASSWORD=$SCHEMA_REGISTRY_PASSWORD \
+    -jar build/libs/lost-report-service.jar
 
 # JAR builder
 FROM openjdk:14 as jar-builder
@@ -32,8 +40,16 @@ FROM alpine:3.11 as full
 ENV JAVA_HOME=/opt/java-minimal
 ENV PATH="$PATH:$JAVA_HOME/bin"
 ARG PROFILE
-ENV PROFILE $PROFILE
+ARG SCHEMA_REGISTRY_USERNAME
+ARG SCHEMA_REGISTRY_PASSWORD
+ENV PROFILE = $PROFILE
+ENV SCHEMA_REGISTRY_USERNAME = $SCHEMA_REGISTRY_USERNAME
+ENV SCHEMA_REGISTRY_PASSWORD = $SCHEMA_REGISTRY_PASSWORD
 COPY --from=jvm-builder "$JAVA_HOME" "$JAVA_HOME"
 WORKDIR lost-report-service
 COPY --from=jar-builder /lost-report-service/lost-report-service.jar .
-ENTRYPOINT java -jar -Dspring.profiles.active=$PROFILE lost-report-service.jar
+ENTRYPOINT java \
+    -Dspring.profiles.active=$PROFILE \
+    -DSCHEMA_REGISTRY_USERNAME=$SCHEMA_REGISTRY_USERNAME \
+    -DSCHEMA_REGISTRY_PASSWORD=$SCHEMA_REGISTRY_PASSWORD \
+    -jar build/libs/lost-report-service.jar
