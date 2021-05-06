@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @Transactional
