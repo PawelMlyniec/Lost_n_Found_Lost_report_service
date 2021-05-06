@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option java_package = "com.pw.lrs";
+option java_multiple_files = true;
+
+import "google/protobuf/timestamp.proto";
+
+message LostReportEditedProto {
+
+    string lostReportId = 1;
+    string title = 2;
+    string description = 3;
+    string category = 4;
+    string userId = 5;
+    uint64 reportedAt = 6;
+}

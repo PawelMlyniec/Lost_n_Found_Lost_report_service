@@ -33,6 +33,20 @@ public class LostReportsRestController {
         return LostReportRest.fromDomain(createdReport);
     }
 
+    @PutMapping("/{id}/edit")
+    public LostReportRest editLostReport(@PathVariable String id, @RequestBody
+        @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(examples = @ExampleObject(
+            value = "{\n"
+                + "    \"title\": \"Zgubiłem Opla\",\n"
+                + "    \"description\": \"Opel był niebieski\",\n"
+                + "    \"category\": \"car\"\n"
+                + "}"
+        ))) LostReportRest report) {
+
+        var editedReport = facade.editLostReport(LostReportId.of(id), report.toDomain());
+        return LostReportRest.fromDomain(editedReport);
+    }
+
     @GetMapping("/{id}")
     public LostReportRest findLostReport(@PathVariable String id) {
 
