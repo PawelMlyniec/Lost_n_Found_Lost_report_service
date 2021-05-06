@@ -93,6 +93,6 @@ tasks {
         group = "build"
         description = "Builds Docker Image"
         dependsOn("bootJar")
-        commandLine("docker", "build", "-t", "lost-report-service", "--target", "fast", "--build-arg", "PROFILE=dev", ".")
+        commandLine("docker", "build", "-t", "lost-report-service", "--build-arg", "PROFILE=dev", ".")
     }
 }

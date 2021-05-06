@@ -31,7 +31,7 @@ dockerize:
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $LATEST_IMAGE_TAG || true
-    - docker build --cache-from $LATEST_IMAGE_TAG -t $IMAGE_TAG -t $LATEST_IMAGE_TAG --build-arg PROFILE=prod --build-arg SCHEMA_REGISTRY_USERNAME=$SCHEMA_REGISTRY_USERNAME --build-arg SCHEMA_REGISTRY_PASSWORD=$SCHEMA_REGISTRY_PASSWORD --target fast .
+    - docker build --cache-from $LATEST_IMAGE_TAG -t $IMAGE_TAG -t $LATEST_IMAGE_TAG --build-arg PROFILE=prod --build-arg SCHEMA_REGISTRY_USERNAME=$SCHEMA_REGISTRY_USERNAME --build-arg SCHEMA_REGISTRY_PASSWORD=$SCHEMA_REGISTRY_PASSWORD .
     - docker push $IMAGE_TAG
     - docker push $LATEST_IMAGE_TAG
 #  only:
