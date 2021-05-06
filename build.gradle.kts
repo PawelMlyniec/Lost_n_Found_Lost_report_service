@@ -57,6 +57,12 @@ dependencies {
     // MongoDB
     implementation("org.springframework.boot", "spring-boot-starter-data-mongodb")
 
+    // Querydsl
+    implementation("com.querydsl", "querydsl-core", "4.4.0")
+    implementation("com.querydsl", "querydsl-jpa", "4.4.0")
+    implementation("com.querydsl:querydsl-mongodb:4.4.0")
+    annotationProcessor("com.querydsl:querydsl-apt:4.4.0:morphia")
+
     // Lombok
     compileOnly("org.projectlombok", "lombok")
     annotationProcessor("org.projectlombok", "lombok")

@@ -1,8 +1,13 @@
 package com.pw.lrs.infrastructure.adapters.rest;
 
 import com.pw.lrs.domain.LostReportId;
+import com.pw.lrs.domain.SearchLostReportQuery;
 import com.pw.lrs.domain.ports.incoming.LostReportFacade;
+import io.swagger.v3.oas.annotations.Parameter;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.media.Content;
@@ -64,5 +69,21 @@ public class LostReportsRestController {
     @DeleteMapping("/{id}/delete")
     public void deleteLostReport(@PathVariable String id) {
         facade.deleteLostReport(LostReportId.of(id));
+    }
+
+    @PostMapping("/searches")
+    @PageableAsQueryParam
+    Page<LostReportRest> search(@RequestBody
+                                @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(examples = @ExampleObject(
+                                    value = "{\n" +
+                                        "     \"titleFragment\": \"zgubiłem\",\n" +
+                                        "     \"reportedFrom\": \"2021-04-18T12:50:17.876Z\",\n" +
+                                        "     \"reportedTo\": \"2021-04-18T13:30:17.876Z\",\n" +
+                                        "     \"category\": \"car\"\n" +
+                                        "}"
+                                )))
+                                    SearchLostReportQuery query, @Parameter(hidden = true) Pageable pageable) {
+        return facade.searchLostReports(query, pageable)
+            .map(LostReportRest::fromDomain);
     }
 }
