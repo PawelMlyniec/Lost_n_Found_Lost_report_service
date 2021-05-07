@@ -3,8 +3,10 @@ package com.pw.lrs.infrastructure.adapters.rest;
 import com.pw.lrs.domain.LostReportId;
 import com.pw.lrs.domain.ports.incoming.LostReportFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,8 +33,8 @@ public class LostReportsRestController {
                 + "    \"description\": \"Opel był niebieski\",\n"
                 + "    \"category\": \"car\"\n"
                 + "}"
-        ))) LostReportRest report, @AuthenticationPrincipal OidcUser oidcUser) throws IOException {
-
+        ))) LostReportRest report,@AuthenticationPrincipal Jwt principal) {
+        report.userId(principal.getClaimAsString("sub"));
         var createdReport = facade.createLostReport(report.toDomain());
         return LostReportRest.fromDomain(createdReport);
     }
