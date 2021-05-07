@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
             .authorizeRequests()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
             .and()
                 .cors()
             .and()

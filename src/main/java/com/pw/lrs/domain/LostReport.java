@@ -23,7 +23,6 @@ public class LostReport {
     private String telephoneNumber;
     private String emailAddress;
     private String city;
-    private Boolean isLost;
 
     public final LostReportId id() {
         return LostReportId.of(id);

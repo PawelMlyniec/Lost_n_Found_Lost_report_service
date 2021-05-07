@@ -15,7 +15,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:9090/oauth/.well-known/jwks.json
+          jwk-set-uri:  https://lost-n-found.eu.auth0.com/.well-known/jwks.json
   data:
     mongodb:
       host: localhost
@@ -23,14 +23,6 @@ spring:
       username: lrs
       password: lrs
       database: lrs-db
-  auth0:
-    client-id: gGcs9fp7dmJfPz94lbtYLKeY3FFxWbtD
-    client-secret: CAEG0vfzJs8Kg3oIAgGZxLtwmpeS9bCsWjTf5USyLR-8JfmjBGzlyoY3mHfqanT7
-    audience: https://lost-n-found.eu.auth0.com/api/v2/
-    grant_type: client_credentials
-    service:
-        url: https://lost-n-found.eu.auth0.com/
-
 springdoc:
   swagger-ui:
     disable-swagger-default-url: true

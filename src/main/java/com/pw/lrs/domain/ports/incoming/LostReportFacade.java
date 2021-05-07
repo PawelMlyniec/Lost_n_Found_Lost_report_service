@@ -2,6 +2,8 @@ package com.pw.lrs.domain.ports.incoming;
 
 import com.pw.lrs.domain.LostReport;
 import com.pw.lrs.domain.LostReportId;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import java.io.IOException;
 
@@ -24,7 +26,7 @@ public interface LostReportFacade {
      * @param report DTO containing lost report data
      * @return lost report domain object with unique ID assigned
      */
-    LostReport createLostReport(LostReport report) throws IOException;
+    LostReport createLostReport(LostReport report);
 
     /**
      * Mark lost report as resolved
