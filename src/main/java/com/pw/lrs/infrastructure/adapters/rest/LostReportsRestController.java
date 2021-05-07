@@ -34,7 +34,7 @@ public class LostReportsRestController {
                 + "    \"category\": \"car\"\n"
                 + "}"
         ))) LostReportRest report,@AuthenticationPrincipal Jwt principal) {
-        report.userId(principal.getClaimAsString("sub"));
+        if(principal != null) report.userId(principal.getClaimAsString("sub"));
         var createdReport = facade.createLostReport(report.toDomain());
         return LostReportRest.fromDomain(createdReport);
     }
