@@ -30,12 +30,14 @@ class LostReportFacadeImpl implements LostReportFacade {
 
     @Override
     public LostReport findLostReport(LostReportId id) {
+
         return lostReportRepository.findById(id.raw())
             .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Override
     public LostReport createLostReport(final LostReport report){
+
         var persistedReport = lostReportRepository.save(report.withReportedAt(Instant.now()));
         fireLostReportCreated(persistedReport);
         return persistedReport;

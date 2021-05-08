@@ -2,6 +2,7 @@ package com.pw.lrs.infrastructure.adapters.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -26,7 +27,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
             .authorizeRequests()
-                .antMatchers("/lostReports/{id}")
+                .antMatchers(HttpMethod.GET, "/lostReports/{id}")
+                .permitAll()
+            .and()
+                .authorizeRequests()
+                .antMatchers("/lostReports/search")
                 .permitAll()
             .and()
                 .authorizeRequests()
