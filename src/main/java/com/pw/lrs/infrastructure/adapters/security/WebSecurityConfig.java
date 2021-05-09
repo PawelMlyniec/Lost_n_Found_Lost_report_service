@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
             .and()
                 .authorizeRequests()
-                .antMatchers("/lostReports/search")
+                .antMatchers("/lostReports/searches")
                 .permitAll()
             .and()
                 .authorizeRequests()
