@@ -7,6 +7,8 @@ import com.pw.lrs.domain.ports.incoming.LostReportFacade;
 import com.pw.lrs.domain.ports.outgoing.EventPublisher;
 import com.pw.lrs.domain.ports.outgoing.LostReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,12 +23,14 @@ class LostReportFacadeImpl implements LostReportFacade {
 
     private final LostReportRepository lostReportRepository;
     private final EventPublisher eventPublisher;
+    private final SearchLostReportQueryConverter searchLostReportQueryConverter;
 
     @Autowired
-    LostReportFacadeImpl(LostReportRepository lostReportRepository, EventPublisher eventPublisher) {
+    LostReportFacadeImpl(LostReportRepository lostReportRepository, EventPublisher eventPublisher, SearchLostReportQueryConverter searchLostReportQueryConverter) {
 
         this.lostReportRepository = lostReportRepository;
         this.eventPublisher = eventPublisher;
+        this.searchLostReportQueryConverter = searchLostReportQueryConverter;
     }
 
     @Override
@@ -37,7 +41,7 @@ class LostReportFacadeImpl implements LostReportFacade {
     }
 
     @Override
-    public LostReport createLostReport(final LostReport report) {
+    public LostReport createLostReport(final LostReport report){
 
         var persistedReport = lostReportRepository.save(report.withReportedAt(Instant.now()));
         fireLostReportCreated(persistedReport);
@@ -95,5 +99,10 @@ class LostReportFacadeImpl implements LostReportFacade {
 
         // TODO obtain from authentication context
         return "1";
+    }
+
+    public Page<LostReport> searchLostReports(SearchLostReportQuery searchLostReportQuery, Pageable pageable) {
+        var predicate = searchLostReportQueryConverter.convert(searchLostReportQuery);
+        return lostReportRepository.findAll(predicate, pageable);
     }
 }

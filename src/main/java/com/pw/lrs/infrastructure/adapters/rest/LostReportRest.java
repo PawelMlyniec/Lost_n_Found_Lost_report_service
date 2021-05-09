@@ -29,6 +29,10 @@ public class LostReportRest {
     @JsonProperty
     @Nullable
     private final OffsetDateTime reportedAt;
+    @JsonProperty
+    @Nullable
+    private String userId;
+
 
     public LostReport toDomain() {
 
@@ -37,6 +41,7 @@ public class LostReportRest {
             .withTitle(title)
             .withDescription(description)
             .withCategory(category)
+            .withUserId(userId)
             .withReportedAt(Optional.ofNullable(reportedAt)
                 .map(OffsetDateTime::toInstant)
                 .orElse(null))
@@ -50,6 +55,7 @@ public class LostReportRest {
             .withTitle(domain.title())
             .withDescription(domain.description())
             .withCategory(domain.category())
+            .withUserId(domain.userId().raw())
             .withReportedAt(domain.reportedAt().atOffset(ZoneOffset.UTC))
             .build();
     }

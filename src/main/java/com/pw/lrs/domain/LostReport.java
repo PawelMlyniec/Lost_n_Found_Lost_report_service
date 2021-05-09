@@ -17,8 +17,13 @@ public class LostReport {
     private @Setter String description;
     private @Setter String category;
     private Instant reportedAt;
+    private Instant dateFrom;
+    private Instant dateTo;
     private String userId;
     private Boolean isResolved;
+    private String telephoneNumber;
+    private String emailAddress;
+    private String city;
 
     public final LostReportId id() {
         return LostReportId.of(id);
