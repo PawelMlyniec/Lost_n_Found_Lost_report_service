@@ -21,7 +21,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:9090/oauth/.well-known/jwks.json
+          jwk-set-uri:  https://lost-n-found.eu.auth0.com/.well-known/jwks.json
   data:
     mongodb:
       host: localhost
@@ -29,7 +29,6 @@ spring:
       username: lrs
       password: lrs
       database: lrs-db
-
 springdoc:
   swagger-ui:
     disable-swagger-default-url: true

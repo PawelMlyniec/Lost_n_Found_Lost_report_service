@@ -41,7 +41,7 @@ class LostReportFacadeImpl implements LostReportFacade {
     }
 
     @Override
-    public LostReport createLostReport(final LostReport report) {
+    public LostReport createLostReport(final LostReport report){
 
         var persistedReport = lostReportRepository.save(report.withReportedAt(Instant.now()));
         fireLostReportCreated(persistedReport);
