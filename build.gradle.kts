@@ -57,6 +57,12 @@ dependencies {
     // MongoDB
     implementation("org.springframework.boot", "spring-boot-starter-data-mongodb")
 
+    // Querydsl
+    implementation("com.querydsl", "querydsl-core", "4.4.0")
+    implementation("com.querydsl", "querydsl-jpa", "4.4.0")
+    implementation("com.querydsl:querydsl-mongodb:4.4.0")
+    annotationProcessor("com.querydsl:querydsl-apt:4.4.0:morphia")
+
     // Lombok
     compileOnly("org.projectlombok", "lombok")
     annotationProcessor("org.projectlombok", "lombok")
@@ -69,6 +75,10 @@ dependencies {
     implementation("io.confluent", "kafka-schema-registry-client", "5.5.1")
     implementation("io.confluent", "monitoring-interceptors", "5.5.1")
 
+    // Metrics
+    implementation("org.springframework.boot", "spring-boot-starter-actuator", "2.4.0")
+    implementation("io.micrometer", "micrometer-registry-prometheus", "latest.release")
+
     // OpenAPI
     implementation("org.springdoc", "springdoc-openapi-ui","1.5.7")
 
@@ -80,6 +90,7 @@ dependencies {
 tasks {
 
     bootJar {
+        mainClass.set("com.pw.lrs.LostReportService")
         archiveFileName.set("lost-report-service.jar")
         dependsOn("generateProto")
     }
@@ -88,6 +99,6 @@ tasks {
         group = "build"
         description = "Builds Docker Image"
         dependsOn("bootJar")
-        commandLine("docker", "build", "-t", "lost-report-service", "--target", "fast", "--build-arg", "PROFILE=dev", ".")
+        commandLine("docker", "build", "-t", "lost-report-service", "--build-arg", "PROFILE=dev", ".")
     }
 }

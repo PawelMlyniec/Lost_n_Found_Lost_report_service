@@ -1,18 +1,21 @@
 package com.pw.lrs.domain;
 
 import com.pw.lrs.LostReportCreatedProto;
+import com.pw.lrs.LostReportEditedProto;
 import com.pw.lrs.LostReportResolvedProto;
 import com.pw.lrs.domain.ports.incoming.LostReportFacade;
 import com.pw.lrs.domain.ports.outgoing.EventPublisher;
 import com.pw.lrs.domain.ports.outgoing.LostReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @Transactional
@@ -20,12 +23,14 @@ class LostReportFacadeImpl implements LostReportFacade {
 
     private final LostReportRepository lostReportRepository;
     private final EventPublisher eventPublisher;
+    private final SearchLostReportQueryConverter searchLostReportQueryConverter;
 
     @Autowired
-    LostReportFacadeImpl(LostReportRepository lostReportRepository, EventPublisher eventPublisher) {
+    LostReportFacadeImpl(LostReportRepository lostReportRepository, EventPublisher eventPublisher, SearchLostReportQueryConverter searchLostReportQueryConverter) {
 
         this.lostReportRepository = lostReportRepository;
         this.eventPublisher = eventPublisher;
+        this.searchLostReportQueryConverter = searchLostReportQueryConverter;
     }
 
     @Override
@@ -44,6 +49,17 @@ class LostReportFacadeImpl implements LostReportFacade {
     }
 
     @Override
+    public LostReport editLostReport(LostReportId id, LostReport editedReport) {
+
+        var lostReport = findLostReport(id);
+        lostReport.category(editedReport.category());
+        lostReport.description(editedReport.description());
+        lostReport.title(editedReport.title());
+        lostReportRepository.save(lostReport);
+        return lostReport;
+    }
+
+    @Override
     public LostReport resolveLostReport(LostReportId id) {
 
         var lostReport = findLostReport(id);
@@ -51,6 +67,11 @@ class LostReportFacadeImpl implements LostReportFacade {
         lostReportRepository.save(lostReport);
         fireLostReportResolved(lostReport);
         return lostReport;
+    }
+
+    @Override
+    public void deleteLostReport(LostReportId id) {
+        lostReportRepository.deleteById(id.raw());
     }
 
     private void fireLostReportCreated(LostReport report) {
@@ -78,5 +99,10 @@ class LostReportFacadeImpl implements LostReportFacade {
 
         // TODO obtain from authentication context
         return "1";
+    }
+
+    public Page<LostReport> searchLostReports(SearchLostReportQuery searchLostReportQuery, Pageable pageable) {
+        var predicate = searchLostReportQueryConverter.convert(searchLostReportQuery);
+        return lostReportRepository.findAll(predicate, pageable);
     }
 }

@@ -2,6 +2,7 @@ package com.pw.lrs.domain;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Setter;
 import lombok.With;
 
 import java.time.Instant;
@@ -12,9 +13,9 @@ import java.time.Instant;
 public class LostReport {
 
     private String id;
-    private String title;
-    private String description;
-    private String category;
+    private @Setter String title;
+    private @Setter String description;
+    private @Setter String category;
     private Instant reportedAt;
     private Instant dateFrom;
     private Instant dateTo;
