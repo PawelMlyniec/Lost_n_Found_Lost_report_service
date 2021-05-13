@@ -9,10 +9,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @EnableWebSecurity
@@ -27,11 +29,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
             .authorizeRequests()
-                .antMatchers("/lostReports/{id}/*")
-                .authenticated()
+                .requestMatchers(forPort(8081))
+                .permitAll()
             .and()
-                .authorizeRequests()
-                .anyRequest().permitAll()
+            .authorizeRequests()
+                .antMatchers("/swagger-ui.html", "/v3/**", "/swagger-ui/**")
+                .permitAll()
+            .and()
+            .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/lostReports")
+                .permitAll()
+            .and()
+            .authorizeRequests()
+                .anyRequest().authenticated()
             .and()
                 .cors()
             .and()
@@ -54,5 +64,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
+    }
+
+    private RequestMatcher forPort(final int port) {
+        return (HttpServletRequest request) -> port == request.getLocalPort();
     }
 }
