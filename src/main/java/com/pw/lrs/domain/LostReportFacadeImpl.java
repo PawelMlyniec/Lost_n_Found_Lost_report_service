@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.Instant;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Service
 @Transactional
@@ -49,9 +50,11 @@ class LostReportFacadeImpl implements LostReportFacade {
     }
 
     @Override
-    public LostReport editLostReport(LostReportId id, LostReport editedReport) {
+    public LostReport editLostReport(LostReportId id, LostReport editedReport, UserId userId) {
 
         var lostReport = findLostReport(id);
+        if(userId.raw() != lostReport.userId().raw())
+            throw new ResponseStatusException(UNAUTHORIZED);
         lostReport.category(editedReport.category());
         lostReport.description(editedReport.description());
         lostReport.title(editedReport.title());
@@ -60,9 +63,11 @@ class LostReportFacadeImpl implements LostReportFacade {
     }
 
     @Override
-    public LostReport resolveLostReport(LostReportId id) {
+    public LostReport resolveLostReport(LostReportId id, UserId userId) {
 
         var lostReport = findLostReport(id);
+        if(userId.raw() != lostReport.userId().raw())
+            throw new ResponseStatusException(UNAUTHORIZED);
         lostReport.resolve();
         lostReportRepository.save(lostReport);
         fireLostReportResolved(lostReport);
@@ -70,7 +75,10 @@ class LostReportFacadeImpl implements LostReportFacade {
     }
 
     @Override
-    public void deleteLostReport(LostReportId id) {
+    public void deleteLostReport(LostReportId id, UserId userId) {
+        var lostReport = findLostReport(id);
+        if(userId.raw() != lostReport.userId().raw())
+            throw new ResponseStatusException(UNAUTHORIZED);
         lostReportRepository.deleteById(id.raw());
     }
 

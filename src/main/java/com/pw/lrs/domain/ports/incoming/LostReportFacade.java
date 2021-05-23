@@ -2,6 +2,7 @@ package com.pw.lrs.domain.ports.incoming;
 
 import com.pw.lrs.domain.LostReport;
 import com.pw.lrs.domain.LostReportId;
+import com.pw.lrs.domain.UserId;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
@@ -39,7 +40,7 @@ public interface LostReportFacade {
      * @param editedReport DTO containing edited lost report data
      * @return lost report domain object with unique ID assigned
      */
-    LostReport editLostReport(LostReportId id, LostReport editedReport);
+    LostReport editLostReport(LostReportId id, LostReport editedReport, UserId userId);
 
     /**
      * Mark lost report as resolved
@@ -47,14 +48,14 @@ public interface LostReportFacade {
      * @param id lost report identifier
      * @return resolved lost report
      */
-    LostReport resolveLostReport(LostReportId id);
+    LostReport resolveLostReport(LostReportId id, UserId userId);
 
     /**
      * Delete lost report
      *
      * @param id lost report identifier
      */
-    void deleteLostReport(LostReportId id);
+    void deleteLostReport(LostReportId id, UserId userId);
 
     /**
      * Search for a page of lost reports filtering by given query
