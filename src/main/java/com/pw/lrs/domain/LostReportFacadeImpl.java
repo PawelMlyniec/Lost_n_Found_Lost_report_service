@@ -53,11 +53,14 @@ class LostReportFacadeImpl implements LostReportFacade {
     public LostReport editLostReport(LostReportId id, LostReport editedReport, UserId userId) {
 
         var lostReport = findLostReport(id);
-        if(userId.raw() != lostReport.userId().raw())
+        if(!userId.raw().equals(lostReport.userId().raw()))
             throw new ResponseStatusException(UNAUTHORIZED);
         lostReport.category(editedReport.category());
         lostReport.description(editedReport.description());
         lostReport.title(editedReport.title());
+        lostReport.tags(editedReport.tags());
+        lostReport.dateFrom(editedReport.dateFrom());
+        lostReport.dateTo(editedReport.dateTo());
         lostReportRepository.save(lostReport);
         return lostReport;
     }
@@ -66,7 +69,7 @@ class LostReportFacadeImpl implements LostReportFacade {
     public LostReport resolveLostReport(LostReportId id, UserId userId) {
 
         var lostReport = findLostReport(id);
-        if(userId.raw() != lostReport.userId().raw())
+        if(!userId.raw().equals(lostReport.userId().raw()))
             throw new ResponseStatusException(UNAUTHORIZED);
         lostReport.resolve();
         lostReportRepository.save(lostReport);
@@ -77,7 +80,7 @@ class LostReportFacadeImpl implements LostReportFacade {
     @Override
     public void deleteLostReport(LostReportId id, UserId userId) {
         var lostReport = findLostReport(id);
-        if(userId.raw() != lostReport.userId().raw())
+        if(!userId.raw().equals(lostReport.userId().raw()))
             throw new ResponseStatusException(UNAUTHORIZED);
         lostReportRepository.deleteById(id.raw());
     }

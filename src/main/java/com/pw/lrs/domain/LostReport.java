@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.With;
 
 import java.time.Instant;
+import java.util.ArrayList;
 
 @Data
 @With
@@ -24,6 +25,7 @@ public class LostReport {
     private String telephoneNumber;
     private String emailAddress;
     private String city;
+    private ArrayList<String> tags;
 
     public final LostReportId id() {
         return LostReportId.of(id);

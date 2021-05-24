@@ -40,7 +40,6 @@ public class LostReportsRestController {
                 + "    \"category\": \"car\"\n"
                 + "}"
         ))) LostReportRest report, @AuthenticationPrincipal Jwt principal) {
-
         report.userId(principal.getClaimAsString("sub"));
         var createdReport = facade.createLostReport(report.toDomain());
         return LostReportRest.fromDomain(createdReport);
@@ -55,9 +54,11 @@ public class LostReportsRestController {
                 + "    \"category\": \"car\"\n"
                 + "}"
         ))) LostReportRest report, @AuthenticationPrincipal Jwt principal) {
-
+        String userId = "";
+        if(principal != null)
+            userId = principal.getClaimAsString("sub") != null ? principal.getClaimAsString("sub") : "" ;
         var editedReport = facade.editLostReport(LostReportId.of(id), report.toDomain(),
-                UserId.of(principal.getClaimAsString("sub")));
+                UserId.of(userId));
         return LostReportRest.fromDomain(editedReport);
     }
 
@@ -70,17 +71,20 @@ public class LostReportsRestController {
 
     @PostMapping("/{id}/resolve")
     public LostReportRest resolveLostReport(@PathVariable String id, @AuthenticationPrincipal Jwt principal) {
-
+        String userId = "";
+        if(principal != null)
+            userId = principal.getClaimAsString("sub") != null ? principal.getClaimAsString("sub") : "" ;
         var resolvedReport = facade.resolveLostReport(LostReportId.of(id),
-                UserId.of(principal.getClaimAsString("sub")));
+                UserId.of(userId));
         return LostReportRest.fromDomain(resolvedReport);
     }
 
     @DeleteMapping("/{id}/delete")
     public void deleteLostReport(@PathVariable String id, @AuthenticationPrincipal Jwt principal) {
-        var foundReport = facade.findLostReport(LostReportId.of(id));
-
-        facade.deleteLostReport(LostReportId.of(id),UserId.of(principal.getClaimAsString("sub")));
+        String userId = "";
+        if(principal != null)
+            userId = principal.getClaimAsString("sub") != null ? principal.getClaimAsString("sub") : "" ;
+        facade.deleteLostReport(LostReportId.of(id),UserId.of(userId));
     }
 
     @PostMapping("/searches")
