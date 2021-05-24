@@ -42,7 +42,7 @@ public class LostReportRest {
     private String userId;
     @JsonProperty
     @Nullable
-    private ArrayList<String> tags;
+    private String[] tags;
 
     public LostReport toDomain() {
 
@@ -74,8 +74,8 @@ public class LostReportRest {
                 .withCategory(domain.category())
                 .withUserId(domain.userId().raw())
                 .withReportedAt(domain.reportedAt().atOffset(ZoneOffset.UTC))
-                .withDateFrom(domain.dateFrom().atOffset(ZoneOffset.UTC))
-                .withDateTo(domain.dateTo().atOffset(ZoneOffset.UTC))
+                .withDateFrom(domain.dateFrom() != null ? domain.dateTo().atOffset(ZoneOffset.UTC) : null)
+                .withDateTo(domain.dateTo() != null ? domain.dateTo().atOffset(ZoneOffset.UTC) : null)
                 .withTags(domain.tags())
                 .build();
     }

@@ -1,9 +1,12 @@
 package com.pw.lrs.domain;
 
 import com.querydsl.core.BooleanBuilder;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 @Component
 public class SearchLostReportQueryConverter implements Converter<SearchLostReportQuery, BooleanBuilder> {
@@ -20,6 +23,8 @@ public class SearchLostReportQueryConverter implements Converter<SearchLostRepor
         addTitlePredicate(query, booleanBuilder);
         addCategoryPredicate(query, booleanBuilder);
         addReportDatePredicate(query, booleanBuilder);
+        addDateLostPredicate(query,booleanBuilder);
+        addTagsPredicate(query,booleanBuilder);
         return booleanBuilder;
     }
 
@@ -43,4 +48,20 @@ public class SearchLostReportQueryConverter implements Converter<SearchLostRepor
             builder.and(lostReport.reportedAt.before(query.reportedTo()));
         }
     }
+
+    private void addDateLostPredicate(SearchLostReportQuery query, BooleanBuilder builder) {
+        if(ObjectUtils.isNotEmpty(query.dateFrom())) {
+            builder.and(lostReport.dateFrom.after(query.dateFrom()));
+        }
+        if(ObjectUtils.isNotEmpty(query.dateTo())) {
+            builder.and(lostReport.dateTo.before(query.dateTo()));
+        }
+    }
+
+    private void addTagsPredicate(SearchLostReportQuery query, BooleanBuilder builder) {
+        if(ObjectUtils.isNotEmpty(query.tags())) {
+            builder.andAnyOf(lostReport.tags.in(query.tags()));
+        }
+    }
+
 }

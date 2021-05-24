@@ -25,7 +25,7 @@ public class LostReport {
     private String telephoneNumber;
     private String emailAddress;
     private String city;
-    private ArrayList<String> tags;
+    private String[] tags;
 
     public final LostReportId id() {
         return LostReportId.of(id);
