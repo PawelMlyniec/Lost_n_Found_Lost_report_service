@@ -59,8 +59,10 @@ public class SearchLostReportQueryConverter implements Converter<SearchLostRepor
     }
 
     private void addTagsPredicate(SearchLostReportQuery query, BooleanBuilder builder) {
-        if(ObjectUtils.isNotEmpty(query.tags())) {
-            builder.andAnyOf(lostReport.tags.in(query.tags()));
+        if(ArrayUtils.isNotEmpty(query.tags())) {
+            for(int i=0;i<query.tags().length;++i){
+                builder.and(lostReport.tags.contains(query.tags()[i]));
+            }
         }
     }
 

@@ -28,7 +28,8 @@ public class QLostReport extends EntityPathBase<LostReport> {
     public final DateTimePath<Instant> reportedAt = createDateTime("reportedAt", Instant.class);
     public final DateTimePath<Instant> dateFrom = createDateTime("dateFrom", Instant.class);
     public final DateTimePath<Instant> dateTo = createDateTime("dateTo", Instant.class);
-    public final ArrayPath<String[],String> tags = createArray("tags", String[].class);
+    public final ListPath<String,StringPath> tags = createList("tags", String.class,
+            StringPath.class,PathInits.DIRECT2);
 
     public final StringPath userId = createString("userId");
 
