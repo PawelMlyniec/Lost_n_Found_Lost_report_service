@@ -2,16 +2,10 @@ package com.pw.lrs.infrastructure.adapters.rest;
 
 import com.pw.lrs.domain.LostReportId;
 import com.pw.lrs.domain.SearchLostReportQuery;
-import com.pw.lrs.domain.UserId;
 import com.pw.lrs.domain.ports.incoming.LostReportFacade;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 
-import java.io.IOException;
 
 
 @RestController
