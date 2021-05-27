@@ -46,7 +46,7 @@ public class LostReportsRestController {
         return LostReportRest.fromDomain(createdReport);
     }
 
-    @PutMapping("/{id}/edit")
+    @PutMapping("/{id}")
     public LostReportRest editLostReport(@PathVariable String id, @RequestBody
         @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(examples = @ExampleObject(
             value = "{\n"
@@ -74,7 +74,7 @@ public class LostReportsRestController {
         return LostReportRest.fromDomain(resolvedReport);
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public void deleteLostReport(@PathVariable String id) {
 
         facade.deleteLostReport(LostReportId.of(id));
