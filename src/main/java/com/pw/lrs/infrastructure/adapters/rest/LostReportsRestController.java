@@ -9,6 +9,7 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.data.domain.Page;
@@ -39,8 +40,8 @@ public class LostReportsRestController {
                 + "    \"description\": \"Opel był niebieski\",\n"
                 + "    \"category\": \"car\"\n"
                 + "}"
-        ))) LostReportRest report, @AuthenticationPrincipal Jwt principal) {
-        report.userId(principal.getClaimAsString("sub"));
+        ))) LostReportRest report) {
+
         var createdReport = facade.createLostReport(report.toDomain());
         return LostReportRest.fromDomain(createdReport);
     }
@@ -53,12 +54,9 @@ public class LostReportsRestController {
                 + "    \"description\": \"Opel był niebieski\",\n"
                 + "    \"category\": \"car\"\n"
                 + "}"
-        ))) LostReportRest report, @AuthenticationPrincipal Jwt principal) {
-        String userId = "";
-        if(principal != null)
-            userId = principal.getClaimAsString("sub") != null ? principal.getClaimAsString("sub") : "" ;
-        var editedReport = facade.editLostReport(LostReportId.of(id), report.toDomain(),
-                UserId.of(userId));
+        ))) LostReportRest report) {
+
+        var editedReport = facade.editLostReport(LostReportId.of(id), report.toDomain());
         return LostReportRest.fromDomain(editedReport);
     }
 
@@ -70,21 +68,16 @@ public class LostReportsRestController {
     }
 
     @PostMapping("/{id}/resolve")
-    public LostReportRest resolveLostReport(@PathVariable String id, @AuthenticationPrincipal Jwt principal) {
-        String userId = "";
-        if(principal != null)
-            userId = principal.getClaimAsString("sub") != null ? principal.getClaimAsString("sub") : "" ;
-        var resolvedReport = facade.resolveLostReport(LostReportId.of(id),
-                UserId.of(userId));
+    public LostReportRest resolveLostReport(@PathVariable String id) {
+
+        var resolvedReport = facade.resolveLostReport(LostReportId.of(id));
         return LostReportRest.fromDomain(resolvedReport);
     }
 
     @DeleteMapping("/{id}/delete")
-    public void deleteLostReport(@PathVariable String id, @AuthenticationPrincipal Jwt principal) {
-        String userId = "";
-        if(principal != null)
-            userId = principal.getClaimAsString("sub") != null ? principal.getClaimAsString("sub") : "" ;
-        facade.deleteLostReport(LostReportId.of(id),UserId.of(userId));
+    public void deleteLostReport(@PathVariable String id) {
+
+        facade.deleteLostReport(LostReportId.of(id));
     }
 
     @PostMapping("/searches")

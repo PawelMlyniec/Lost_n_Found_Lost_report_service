@@ -1,7 +1,6 @@
 package com.pw.lrs.domain;
 
 import com.pw.lrs.LostReportCreatedProto;
-import com.pw.lrs.LostReportEditedProto;
 import com.pw.lrs.LostReportResolvedProto;
 import com.pw.lrs.domain.ports.incoming.LostReportFacade;
 import com.pw.lrs.domain.ports.outgoing.EventPublisher;
@@ -42,18 +41,20 @@ class LostReportFacadeImpl implements LostReportFacade {
     }
 
     @Override
-    public LostReport createLostReport(final LostReport report){
+    public LostReport createLostReport(final LostReport report) {
 
+        report.userId(UserOperation.getAuthenticatedUserId());
         var persistedReport = lostReportRepository.save(report.withReportedAt(Instant.now()));
         fireLostReportCreated(persistedReport);
         return persistedReport;
     }
 
     @Override
-    public LostReport editLostReport(LostReportId id, LostReport editedReport, UserId userId) {
+    public LostReport editLostReport(LostReportId id, LostReport editedReport) {
 
+        var userId = UserOperation.getAuthenticatedUserId();
         var lostReport = findLostReport(id);
-        if(!userId.raw().equals(lostReport.userId().raw()))
+        if (!userId.equals(lostReport.userId().raw()))
             throw new ResponseStatusException(UNAUTHORIZED);
         lostReport.category(editedReport.category());
         lostReport.description(editedReport.description());
@@ -66,10 +67,11 @@ class LostReportFacadeImpl implements LostReportFacade {
     }
 
     @Override
-    public LostReport resolveLostReport(LostReportId id, UserId userId) {
+    public LostReport resolveLostReport(LostReportId id) {
 
+        var userId = UserOperation.getAuthenticatedUserId();
         var lostReport = findLostReport(id);
-        if(!userId.raw().equals(lostReport.userId().raw()))
+        if (!userId.equals(lostReport.userId().raw()))
             throw new ResponseStatusException(UNAUTHORIZED);
         lostReport.resolve();
         lostReportRepository.save(lostReport);
@@ -78,9 +80,11 @@ class LostReportFacadeImpl implements LostReportFacade {
     }
 
     @Override
-    public void deleteLostReport(LostReportId id, UserId userId) {
+    public void deleteLostReport(LostReportId id) {
+
+        var userId = UserOperation.getAuthenticatedUserId();
         var lostReport = findLostReport(id);
-        if(!userId.raw().equals(lostReport.userId().raw()))
+        if (!userId.equals(lostReport.userId().raw()))
             throw new ResponseStatusException(UNAUTHORIZED);
         lostReportRepository.deleteById(id.raw());
     }
@@ -94,7 +98,7 @@ class LostReportFacadeImpl implements LostReportFacade {
             .setCategory(report.category())
             .setReportedAt(report.reportedAt().toEpochMilli())
             .build();
-        eventPublisher.publishDomainEvent(getAuthenticatedUserId(), event);
+        eventPublisher.publishDomainEvent(UserOperation.getAuthenticatedUserId(), event);
     }
 
     private void fireLostReportResolved(LostReport report) {
@@ -103,13 +107,7 @@ class LostReportFacadeImpl implements LostReportFacade {
             .setLostReportId(report.id().raw())
             .setResolvedAt(Instant.now().toEpochMilli())
             .build();
-        eventPublisher.publishDomainEvent(getAuthenticatedUserId(), event);
-    }
-
-    private String getAuthenticatedUserId() {
-
-        // TODO obtain from authentication context
-        return "1";
+        eventPublisher.publishDomainEvent(UserOperation.getAuthenticatedUserId(), event);
     }
 
     public Page<LostReport> searchLostReports(SearchLostReportQuery searchLostReportQuery, Pageable pageable) {
