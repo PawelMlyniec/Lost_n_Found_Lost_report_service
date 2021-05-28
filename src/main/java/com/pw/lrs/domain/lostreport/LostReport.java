@@ -1,12 +1,12 @@
-package com.pw.lrs.domain;
+package com.pw.lrs.domain.lostreport;
 
+import com.pw.lrs.domain.UserId;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;
 import lombok.With;
 
 import java.time.Instant;
-import java.util.ArrayList;
 
 @Data
 @With

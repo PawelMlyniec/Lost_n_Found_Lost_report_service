@@ -1,4 +1,4 @@
-package com.pw.lrs.domain;
+package com.pw.lrs.domain.lostreport;
 
 import lombok.*;
 

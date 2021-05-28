@@ -1,7 +1,8 @@
-package com.pw.lrs.domain;
+package com.pw.lrs.domain.lostreport;
 
 import com.pw.lrs.LostReportCreatedProto;
 import com.pw.lrs.LostReportResolvedProto;
+import com.pw.lrs.domain.UserOperation;
 import com.pw.lrs.domain.ports.incoming.LostReportFacade;
 import com.pw.lrs.domain.ports.outgoing.EventPublisher;
 import com.pw.lrs.domain.ports.outgoing.LostReportRepository;
@@ -110,6 +111,7 @@ class LostReportFacadeImpl implements LostReportFacade {
         eventPublisher.publishDomainEvent(UserOperation.getAuthenticatedUserId(), event);
     }
 
+    @Override
     public Page<LostReport> searchLostReports(SearchLostReportQuery searchLostReportQuery, Pageable pageable) {
         var predicate = searchLostReportQueryConverter.convert(searchLostReportQuery);
         return lostReportRepository.findAll(predicate, pageable);

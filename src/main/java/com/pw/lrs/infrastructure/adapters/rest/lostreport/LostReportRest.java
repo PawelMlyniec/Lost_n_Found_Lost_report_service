@@ -1,13 +1,12 @@
-package com.pw.lrs.infrastructure.adapters.rest;
+package com.pw.lrs.infrastructure.adapters.rest.lostreport;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mongodb.lang.Nullable;
-import com.pw.lrs.domain.LostReport;
+import com.pw.lrs.domain.lostreport.LostReport;
 import lombok.Builder;
 import lombok.Data;
 import lombok.With;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;

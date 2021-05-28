@@ -1,9 +1,9 @@
 package com.pw.lrs.domain.ports.incoming;
 
-import com.pw.lrs.domain.LostReport;
-import com.pw.lrs.domain.LostReportId;
+import com.pw.lrs.domain.lostreport.LostReport;
+import com.pw.lrs.domain.lostreport.LostReportId;
 
-import com.pw.lrs.domain.SearchLostReportQuery;
+import com.pw.lrs.domain.lostreport.SearchLostReportQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
