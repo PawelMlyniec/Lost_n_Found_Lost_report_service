@@ -1,19 +1,16 @@
-package com.pw.lrs.infrastructure.adapters.rest;
+package com.pw.lrs.infrastructure.adapters.rest.lostreport;
 
-import com.pw.lrs.domain.LostReportId;
-import com.pw.lrs.domain.SearchLostReportQuery;
+import com.pw.lrs.domain.lostreport.LostReportId;
+import com.pw.lrs.domain.lostreport.SearchLostReportQuery;
 import com.pw.lrs.domain.ports.incoming.LostReportFacade;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-
-
 
 @RestController
 @RequestMapping("/lostReports")

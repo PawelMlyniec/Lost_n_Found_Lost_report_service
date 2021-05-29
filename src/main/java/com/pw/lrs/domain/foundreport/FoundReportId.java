@@ -1,10 +1,10 @@
-package com.pw.lrs.domain;
+package com.pw.lrs.domain.foundreport;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor(staticName = "of")
-public class LostReportId {
+public class FoundReportId {
     private final String raw;
 }
