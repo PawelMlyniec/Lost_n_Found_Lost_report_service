@@ -24,29 +24,57 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     String jwkSetUri;
 
     @Override
-    protected void configure(final HttpSecurity http) throws Exception {
-        //@formatter:off
+    protected void configure(HttpSecurity http) throws Exception {
+        setupAuth0(http);
+        permitManagementEndpoints(http);
+        permitSwaggerUi(http);
+        permitPublicEndpoints(http);
+        secureAnyOtherEndpoint(http);
+        setupCors(http);
+        disableCsrf(http);
+    }
+
+    private void setupAuth0(HttpSecurity http) throws Exception {
+        http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+    }
+
+    private void permitManagementEndpoints(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+            .requestMatchers(forPort(8081))
+            .permitAll();
+    }
+
+    private void permitSwaggerUi(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+            .antMatchers("/swagger-ui.html", "/v3/**", "/swagger-ui/**")
+            .permitAll();
+    }
+
+    private void permitPublicEndpoints(HttpSecurity http) throws Exception {
+        // @formatter:off
         http
-            .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-//            .authorizeRequests()
-//                .requestMatchers(forPort(8081))
-//                .permitAll()
-//            .and()
-//            .authorizeRequests()
-//                .antMatchers("/swagger-ui.html", "/v3/**", "/swagger-ui/**")
-//                .permitAll()
-//            .and()
-//            .authorizeRequests()
-//                .antMatchers(HttpMethod.POST, "/lostReports", "/lostReports/searches")
-//                .permitAll()
-//            .and()
             .authorizeRequests()
-                .anyRequest().permitAll()
+                .antMatchers(HttpMethod.POST, "/lostReports", "/lostReports/searches")
+                .permitAll()
             .and()
-                .cors()
-            .and()
-                .csrf().disable();
-        //@formatter:on
+            .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/lostReports", "/lostReports/**")
+                .permitAll();
+        // @formatter:on
+    }
+
+    private void secureAnyOtherEndpoint(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+            .anyRequest()
+            .authenticated();
+    }
+
+    private void setupCors(HttpSecurity http) throws Exception {
+        http.cors();
+    }
+
+    private void disableCsrf(HttpSecurity http) throws Exception {
+        http.csrf().disable();
     }
 
     @Bean
