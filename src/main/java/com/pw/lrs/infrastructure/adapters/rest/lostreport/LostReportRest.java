@@ -3,8 +3,10 @@ package com.pw.lrs.infrastructure.adapters.rest.lostreport;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mongodb.lang.Nullable;
 import com.pw.lrs.domain.lostreport.LostReport;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.With;
 
 import java.time.OffsetDateTime;
@@ -16,6 +18,7 @@ import java.util.Optional;
 @Data
 @With
 @Builder(setterPrefix = "with")
+@AllArgsConstructor
 public class LostReportRest {
 
     @JsonProperty
@@ -42,6 +45,12 @@ public class LostReportRest {
     @JsonProperty
     @Nullable
     private String[] tags;
+    @JsonProperty
+    private final String telephoneNumber;
+    @JsonProperty
+    private final String emailAddress;
+    @JsonProperty
+    private final String city;
 
     public LostReport toDomain() {
 
@@ -61,6 +70,9 @@ public class LostReportRest {
                         .map(OffsetDateTime::toInstant)
                         .orElse(null))
                 .withTags(tags)
+                .withTelephoneNumber(telephoneNumber)
+                .withEmailAddress(emailAddress)
+                .withCity(city)
                 .build();
     }
 
@@ -76,6 +88,9 @@ public class LostReportRest {
                 .withDateFrom(domain.dateFrom() != null ? domain.dateTo().atOffset(ZoneOffset.UTC) : null)
                 .withDateTo(domain.dateTo() != null ? domain.dateTo().atOffset(ZoneOffset.UTC) : null)
                 .withTags(domain.tags())
+                .withTelephoneNumber(domain.telephoneNumber())
+                .withEmailAddress(domain.emailAddress())
+                .withCity(domain.city())
                 .build();
     }
 }

@@ -39,6 +39,8 @@ public class QFoundReport extends EntityPathBase<FoundReport> {
 
     public final ListPath<String,StringPath> tags = createList("tags", String.class, StringPath.class, PathInits.DIRECT2);
 
+    public final StringPath city = createString("city");
+
     public QFoundReport(String variable) {
         super(FoundReport.class, forVariable(variable));
     }

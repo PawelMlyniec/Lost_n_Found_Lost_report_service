@@ -67,6 +67,13 @@ dependencies {
     compileOnly("org.projectlombok", "lombok")
     annotationProcessor("org.projectlombok", "lombok")
 
+    // Retrofit
+    implementation("com.squareup.retrofit2","retrofit", "2.9.0")
+    implementation ("com.squareup.retrofit2", "converter-gson", "2.9.0")
+
+    // Auth0
+    implementation ("com.auth0","java-jwt","3.15.0")
+
     // Protobuf
     implementation("com.google.protobuf:protobuf-java:3.6.1")
 

@@ -36,6 +36,8 @@ public class QLostReport extends EntityPathBase<LostReport> {
 
     public final BooleanPath isResolved = createBoolean("isResolved");
 
+    public final StringPath city = createString("city");
+
     public QLostReport(String variable) {
         super(LostReport.class, forVariable(variable));
     }

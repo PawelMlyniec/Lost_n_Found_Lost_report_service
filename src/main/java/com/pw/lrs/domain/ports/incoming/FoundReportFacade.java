@@ -3,6 +3,7 @@ package com.pw.lrs.domain.ports.incoming;
 import com.pw.lrs.domain.foundreport.FoundReport;
 import com.pw.lrs.domain.foundreport.FoundReportId;
 import com.pw.lrs.domain.foundreport.SearchFoundReportQuery;
+import com.pw.lrs.domain.lostreport.LostReport;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -56,4 +57,12 @@ public interface FoundReportFacade {
      * @return page of matching found reports
      */
     Page<FoundReport> searchFoundReports(SearchFoundReportQuery searchFoundReportQuery, Pageable pageable);
+
+    /**
+     * Search for a page of found reports matching given lost report
+     * @param lostReport lost report which found reports will be matched against
+     * @param pageable page information
+     * @return page of matching found reports
+     */
+    Page<FoundReport> findMatchingFoundReports(LostReport lostReport, Pageable pageable);
 }
