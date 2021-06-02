@@ -85,5 +85,4 @@ public class LostReportsRestController {
         return facade.searchLostReports(query, pageable)
             .map(LostReportRest::fromDomain);
     }
-
 }

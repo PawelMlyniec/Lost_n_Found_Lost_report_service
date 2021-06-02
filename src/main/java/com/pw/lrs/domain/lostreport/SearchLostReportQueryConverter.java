@@ -24,6 +24,7 @@ public class SearchLostReportQueryConverter implements Converter<SearchLostRepor
         addReportDatePredicate(query, booleanBuilder);
         addDateLostPredicate(query, booleanBuilder);
         addTagsPredicate(query, booleanBuilder);
+        addCityPredicate(query, booleanBuilder);
         return booleanBuilder;
     }
 
@@ -53,11 +54,11 @@ public class SearchLostReportQueryConverter implements Converter<SearchLostRepor
 
     private void addDateLostPredicate(SearchLostReportQuery query, BooleanBuilder builder) {
 
-        if (ObjectUtils.isNotEmpty(query.dateFrom())) {
-            builder.and(lostReport.dateFrom.before(query.dateFrom()).not());
-        }
         if (ObjectUtils.isNotEmpty(query.dateTo())) {
-            builder.and(lostReport.dateTo.after(query.dateTo()).not());
+            builder.and(lostReport.dateFrom.after(query.dateTo()).not());
+        }
+        if (ObjectUtils.isNotEmpty(query.dateFrom())) {
+            builder.and(lostReport.dateTo.before(query.dateFrom()).not());
         }
     }
 
@@ -70,4 +71,10 @@ public class SearchLostReportQueryConverter implements Converter<SearchLostRepor
         }
     }
 
+    private void addCityPredicate(SearchLostReportQuery query, BooleanBuilder builder) {
+
+        if(ObjectUtils.isNotEmpty(query.city())) {
+            builder.and(lostReport.city.eq(query.city()));
+        }
+    }
 }

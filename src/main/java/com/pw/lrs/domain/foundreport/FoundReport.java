@@ -1,6 +1,6 @@
 package com.pw.lrs.domain.foundreport;
 
-import com.pw.lrs.domain.UserId;
+import com.pw.lrs.domain.user.UserId;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.pw.lrs.domain;
+package com.pw.lrs.domain.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

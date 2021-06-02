@@ -23,6 +23,7 @@ public class SearchFoundReportQueryConverter implements Converter<SearchFoundRep
         addReportDatePredicate(query, booleanBuilder);
         addFoundDatePredicate(query, booleanBuilder);
         addTagsPredicate(query, booleanBuilder);
+        addCityPredicate(query, booleanBuilder);
         return booleanBuilder;
     }
 
@@ -53,19 +54,26 @@ public class SearchFoundReportQueryConverter implements Converter<SearchFoundRep
     private void addFoundDatePredicate(SearchFoundReportQuery query, BooleanBuilder builder) {
 
         if(ObjectUtils.isNotEmpty(query.foundFrom())) {
-            builder.and(foundReport.foundDate.before(query.reportedFrom()).not());
+            builder.and(foundReport.foundDate.before(query.foundFrom()).not());
         }
         if(ObjectUtils.isNotEmpty(query.foundTo())) {
-            builder.and(foundReport.foundDate.after(query.reportedTo()).not());
+            builder.and(foundReport.foundDate.after(query.foundTo()).not());
         }
     }
 
     private void addTagsPredicate(SearchFoundReportQuery query, BooleanBuilder builder) {
 
-        if (ObjectUtils.isNotEmpty(query.tags())) {
+        if(ObjectUtils.isNotEmpty(query.tags())) {
             for (int i = 0; i < query.tags().size(); ++i) {
                 builder.and(foundReport.tags.contains(query.tags().get(i)));
             }
+        }
+    }
+
+    private void addCityPredicate(SearchFoundReportQuery query, BooleanBuilder builder) {
+
+        if(ObjectUtils.isNotEmpty(query.city())) {
+            builder.and(foundReport.city.eq(query.city()));
         }
     }
 }

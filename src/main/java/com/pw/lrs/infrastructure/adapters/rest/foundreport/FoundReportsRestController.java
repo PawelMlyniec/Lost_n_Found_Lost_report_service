@@ -3,6 +3,7 @@ package com.pw.lrs.infrastructure.adapters.rest.foundreport;
 import com.pw.lrs.domain.foundreport.FoundReportId;
 import com.pw.lrs.domain.foundreport.SearchFoundReportQuery;
 import com.pw.lrs.domain.ports.incoming.FoundReportFacade;
+import com.pw.lrs.infrastructure.adapters.rest.lostreport.LostReportRest;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,11 +31,15 @@ public class FoundReportsRestController {
     public FoundReportRest createFoundReport(
         @RequestBody
         @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(examples = @ExampleObject(
-            value = "{\n"
-                + "    \"title\": \"Znalazłem Opla\",\n"
-                + "    \"description\": \"Opel jest niebieski\",\n"
-                + "    \"category\": \"car\"\n"
-                + "}"
+            value = "{\n" +
+                "  \"title\": \"Znalazłem Opla\",\n" +
+                "  \"description\": \"Opel jest niebieski\",\n" +
+                "  \"category\": \"car\",\n" +
+                "  \"foundDate\": \"2021-05-28T14:54:00.68Z\",\n" +
+                "  \"telephoneNumber\": \"604425052\",\n" +
+                "  \"emailAddress\": \"doylgaafs@gmail.com\",\n" +
+                "  \"city\": \"Manchester\"\n" +
+                "}"
         ))) FoundReportRest report) {
 
         var createdReport = foundReportFacade.createFoundReport(report.toDomain());
@@ -45,11 +51,15 @@ public class FoundReportsRestController {
         @PathVariable String id,
         @RequestBody
         @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(examples = @ExampleObject(
-            value = "{\n"
-                + "    \"title\": \"Znalazłem Opla\",\n"
-                + "    \"description\": \"Opel jest niebieski\",\n"
-                + "    \"category\": \"car\"\n"
-                + "}"
+            value = "{\n" +
+                "  \"title\": \"Znalazłem Opla\",\n" +
+                "  \"description\": \"Opel jest niebieski\",\n" +
+                "  \"category\": \"car\",\n" +
+                "  \"foundDate\": \"2021-05-28T14:54:00.68Z\",\n" +
+                "  \"telephoneNumber\": \"604425052\",\n" +
+                "  \"emailAddress\": \"doylgaafs@gmail.com\",\n" +
+                "  \"city\": \"Manchester\"\n" +
+                "}"
         ))) FoundReportRest report) {
 
         var editedReport = foundReportFacade.editFoundReport(FoundReportId.of(id), report.toDomain());
@@ -80,6 +90,14 @@ public class FoundReportsRestController {
     Page<FoundReportRest> search(@RequestBody SearchFoundReportQuery query, @Parameter(hidden = true) Pageable pageable) {
 
         return foundReportFacade.searchFoundReports(query, pageable)
+            .map(FoundReportRest::fromDomain);
+    }
+
+    @PostMapping("/matching")
+    @PageableAsQueryParam
+    Page<FoundReportRest> findMatchingFoundReports(@RequestBody LostReportRest lostReportRest, @Parameter(hidden = true) Pageable pageable) {
+
+        return foundReportFacade.findMatchingFoundReports(lostReportRest.toDomain(), pageable)
             .map(FoundReportRest::fromDomain);
     }
 }

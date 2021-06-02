@@ -16,4 +16,5 @@ public class SearchFoundReportQuery {
     private final Instant foundFrom;
     private final Instant foundTo;
     private final List<String> tags;
+    private final String city;
 }

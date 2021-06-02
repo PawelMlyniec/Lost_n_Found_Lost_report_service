@@ -1,5 +1,6 @@
 package com.pw.lrs.domain.ports.incoming;
 
+import com.pw.lrs.domain.foundreport.FoundReport;
 import com.pw.lrs.domain.lostreport.LostReport;
 import com.pw.lrs.domain.lostreport.LostReportId;
 
@@ -61,4 +62,12 @@ public interface LostReportFacade {
      * @return page of matching lost reports
      */
     Page<LostReport> searchLostReports(SearchLostReportQuery searchLostReportQuery, Pageable pageable);
+
+    /**
+     * Search for a page of lost reports matching given found report
+     * @param foundReport found report which lost reports will be matched against
+     * @param pageable page information
+     * @return page of matching lost reports
+     */
+    Page<LostReport> findMatchingLostReports(FoundReport foundReport, Pageable pageable);
 }
