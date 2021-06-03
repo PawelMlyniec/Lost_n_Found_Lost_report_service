@@ -85,7 +85,7 @@ public class LostReportRest {
                 .withCategory(domain.category())
                 .withUserId(domain.userId().raw())
                 .withReportedAt(domain.reportedAt().atOffset(ZoneOffset.UTC))
-                .withDateFrom(domain.dateFrom() != null ? domain.dateTo().atOffset(ZoneOffset.UTC) : null)
+                .withDateFrom(domain.dateFrom() != null ? domain.dateFrom().atOffset(ZoneOffset.UTC) : null)
                 .withDateTo(domain.dateTo() != null ? domain.dateTo().atOffset(ZoneOffset.UTC) : null)
                 .withTags(domain.tags())
                 .withTelephoneNumber(domain.telephoneNumber())

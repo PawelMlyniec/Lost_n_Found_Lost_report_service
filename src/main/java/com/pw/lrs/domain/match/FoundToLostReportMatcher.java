@@ -18,6 +18,16 @@ public class FoundToLostReportMatcher {
     private final LostReportCrudService lostReportCrudService;
     private final FoundReportCrudService foundReportCrudService;
 
+    public Page<FoundReport> findMatchingFoundReports(final LostReport lostReport, Pageable pageable) {
+
+        var query = SearchFoundReportQuery.builder()
+            .category(lostReport.category())
+            .foundFrom(lostReport.dateFrom())
+            .city(lostReport.city())
+            .build();
+        return foundReportCrudService.searchFoundReports(query, pageable);
+    }
+
     public Page<LostReport> findMatchingLostReports(final FoundReport foundReport, Pageable pageable) {
 
         var query = buildSearchLostReportQuery(foundReport);
@@ -37,15 +47,5 @@ public class FoundToLostReportMatcher {
             .dateTo(foundReport.foundDate())
             .city(foundReport.city())
             .build();
-    }
-
-    public Page<FoundReport> findMatchingFoundReports(final LostReport lostReport, Pageable pageable) {
-
-        var query = SearchFoundReportQuery.builder()
-            .category(lostReport.category())
-            .foundFrom(lostReport.dateFrom())
-            .city(lostReport.city())
-            .build();
-        return foundReportCrudService.searchFoundReports(query, pageable);
     }
 }

@@ -29,8 +29,7 @@ public class LostReportCrudService {
     public LostReport create(final LostReport report) {
 
         report.userId(SecurityContexts.getAuthenticatedUserId());
-        var persistedReport = lostReportRepository.save(report.withReportedAt(Instant.now()));
-        return persistedReport;
+        return lostReportRepository.save(report.withReportedAt(Instant.now()));
     }
 
     public void delete(LostReportId id) {
