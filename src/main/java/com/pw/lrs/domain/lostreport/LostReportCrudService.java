@@ -1,8 +1,5 @@
 package com.pw.lrs.domain.lostreport;
 
-import com.pw.lrs.LostReportCreatedProto;
-import com.pw.lrs.LostReportResolvedProto;
-import com.pw.lrs.domain.ports.outgoing.EventPublisher;
 import com.pw.lrs.domain.ports.outgoing.LostReportRepository;
 import com.pw.lrs.infrastructure.adapters.security.SecurityContexts;
 import lombok.RequiredArgsConstructor;
