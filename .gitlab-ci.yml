@@ -14,6 +14,7 @@ variables:
 stages:
   - build
   - dockerize
+  - register-schema
   - deploy
 
 build:
@@ -34,6 +35,14 @@ dockerize:
     - docker build --cache-from $LATEST_IMAGE_TAG -t $IMAGE_TAG -t $LATEST_IMAGE_TAG --build-arg PROFILE=prod --build-arg SCHEMA_REGISTRY_USERNAME=$SCHEMA_REGISTRY_USERNAME --build-arg SCHEMA_REGISTRY_PASSWORD=$SCHEMA_REGISTRY_PASSWORD .
     - docker push $IMAGE_TAG
     - docker push $LATEST_IMAGE_TAG
+  only:
+    - master
+
+register-schema:
+  image: openjdk:14
+  stage: register-schema
+  script:
+    - ./gradlew registerSchemasTask
   only:
     - master
 
