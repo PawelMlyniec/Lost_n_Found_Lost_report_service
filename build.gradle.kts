@@ -5,7 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("com.google.protobuf") version "0.8.15"
     id("com.github.imflog.kafka-schema-registry-gradle-plugin") version "1.2.0"
-    java
+    `java-library`
     idea
 }
 
@@ -69,11 +69,12 @@ dependencies {
     // MongoDB
     implementation("org.springframework.boot", "spring-boot-starter-data-mongodb")
 
-    // Querydsl
-    implementation("com.querydsl", "querydsl-core", "4.4.0")
-    implementation("com.querydsl", "querydsl-jpa", "4.4.0")
-    implementation("com.querydsl:querydsl-mongodb:4.4.0")
-    annotationProcessor("com.querydsl:querydsl-apt:4.4.0:morphia")
+    // QueryDSL
+    api("com.querydsl", "querydsl-core", "4.2.1")
+    api("javax.persistence", "javax.persistence-api", "2.2")
+    annotationProcessor("com.querydsl:querydsl-apt:4.2.1:jpa")
+    annotationProcessor("javax.persistence:javax.persistence-api")
+    annotationProcessor("javax.annotation:javax.annotation-api")
 
     // Lombok
     compileOnly("org.projectlombok", "lombok")
