@@ -59,6 +59,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/lostReports", "/lostReports/**")
+                .permitAll()
+            .and()
+            .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/foundReports", "/foundReports/searches")
+                .permitAll()
+            .and()
+            .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/foundReports", "/foundReports/**")
                 .permitAll();
         // @formatter:on
     }
