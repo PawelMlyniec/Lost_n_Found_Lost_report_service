@@ -3,7 +3,7 @@ import com.google.protobuf.gradle.*
 plugins {
     id("org.springframework.boot") version "2.4.4"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("com.google.protobuf") version "0.8.15"
+    id("com.google.protobuf") version "0.8.16"
     id("com.github.imflog.kafka-schema-registry-gradle-plugin") version "1.2.0"
     java
     idea
@@ -44,7 +44,7 @@ schemaRegistry {
         password.set(System.getenv("SCHEMA_REGISTRY_PASSWORD") ?: "<password>")
     }
     register {
-        subject("lrs-lost-reports-proto-ItemsMatched", "src/main/proto/com/pw/lrs/ItemsMatched.proto", "PROTOBUF")
+        subject("lrs-lost-reports-proto-ItemsMatchedProto", "src/main/proto/com/pw/lrs/ItemsMatched.proto", "PROTOBUF")
     }
 }
 
