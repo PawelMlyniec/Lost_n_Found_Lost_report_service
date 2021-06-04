@@ -11,7 +11,7 @@ public class SearchFoundReportQueryConverter implements Converter<SearchFoundRep
     private final QFoundReport foundReport;
 
     public SearchFoundReportQueryConverter() {
-        this.foundReport = QFoundReport.lostReport;
+        this.foundReport = QFoundReport.foundReport;
     }
 
     @Override

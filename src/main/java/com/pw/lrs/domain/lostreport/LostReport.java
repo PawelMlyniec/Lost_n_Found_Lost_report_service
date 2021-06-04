@@ -6,11 +6,15 @@ import lombok.Data;
 import lombok.Setter;
 import lombok.With;
 
+import javax.persistence.Entity;
 import java.time.Instant;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @With
 @Builder(toBuilder = true, setterPrefix = "with")
+@Entity
 public class LostReport {
 
     private String id;
@@ -25,7 +29,7 @@ public class LostReport {
     private String telephoneNumber;
     private String emailAddress;
     private String city;
-    private String[] tags;
+    private List<String> tags;
 
     public final LostReportId id() {
         return LostReportId.of(id);

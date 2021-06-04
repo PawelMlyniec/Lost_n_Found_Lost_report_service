@@ -11,6 +11,7 @@ import lombok.With;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Optional;
+import java.util.Set;
 
 @Data
 @With
@@ -41,7 +42,7 @@ public class LostReportRest {
     private String userId;
     @JsonProperty
     @Nullable
-    private String[] tags;
+    private List<String> tags;
     @JsonProperty
     private final String telephoneNumber;
     @JsonProperty

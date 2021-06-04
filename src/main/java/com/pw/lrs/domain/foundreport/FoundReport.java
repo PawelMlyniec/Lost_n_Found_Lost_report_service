@@ -6,11 +6,15 @@ import lombok.Data;
 import lombok.Setter;
 import lombok.With;
 
+import javax.persistence.Entity;
 import java.time.Instant;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @With
 @Builder(toBuilder = true, setterPrefix = "with")
+@Entity
 public class FoundReport {
     private String id;
     @Setter
@@ -26,7 +30,7 @@ public class FoundReport {
     private String telephoneNumber;
     private String emailAddress;
     private String city;
-    private String[] tags;
+    private List<String> tags;
 
     public final FoundReportId id() {
         return FoundReportId.of(id);
