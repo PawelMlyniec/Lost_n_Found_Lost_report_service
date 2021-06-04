@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
             .and()
             .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/foundReports", "/foundReports/searches")
+                .antMatchers(HttpMethod.POST, "/foundReports", "/foundReports/searches", "/foundReports/matching")
                 .permitAll()
             .and()
             .authorizeRequests()
