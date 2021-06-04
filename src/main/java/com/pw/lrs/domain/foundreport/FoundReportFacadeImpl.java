@@ -3,7 +3,7 @@ package com.pw.lrs.domain.foundreport;
 import com.pw.lrs.domain.match.FoundToLostReportMatcher;
 import com.pw.lrs.domain.lostreport.LostReport;
 import com.pw.lrs.domain.match.MatchingReportsNotifier;
-import com.pw.lrs.domain.ports.incoming.FoundReportFacade;
+import com.pw.lrs.domain.FoundReportFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

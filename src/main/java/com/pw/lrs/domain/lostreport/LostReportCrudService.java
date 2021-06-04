@@ -1,7 +1,6 @@
 package com.pw.lrs.domain.lostreport;
 
-import com.pw.lrs.domain.ports.outgoing.LostReportRepository;
-import com.pw.lrs.infrastructure.adapters.security.SecurityContexts;
+import com.pw.lrs.infrastructure.security.SecurityContexts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

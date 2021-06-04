@@ -1,7 +1,6 @@
 package com.pw.lrs.domain.foundreport;
 
-import com.pw.lrs.domain.ports.outgoing.FoundReportRepository;
-import com.pw.lrs.infrastructure.adapters.security.SecurityContexts;
+import com.pw.lrs.infrastructure.security.SecurityContexts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

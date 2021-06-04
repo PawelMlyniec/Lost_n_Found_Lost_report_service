@@ -2,7 +2,7 @@ package com.pw.lrs.domain.lostreport;
 
 import com.pw.lrs.domain.foundreport.FoundReport;
 import com.pw.lrs.domain.match.FoundToLostReportMatcher;
-import com.pw.lrs.domain.ports.incoming.LostReportFacade;
+import com.pw.lrs.domain.LostReportFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
