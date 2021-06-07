@@ -4,6 +4,7 @@ spring:
     client-id: lost-report-service
     properties:
       schema.registry.url: http://schema-registry-svc.kafka:9099
+      auto.register.schemas: false
       basic.auth.credentials.source: USER_INFO
       basic.auth.user.info: ${SCHEMA_REGISTRY_USERNAME}:${SCHEMA_REGISTRY_PASSWORD}
       value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
